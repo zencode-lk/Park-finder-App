@@ -31,6 +31,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _termsAccepted = false;
+  bool _isCustomer = false;
+  bool _isLandOwner = false;
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +118,28 @@ class _RegistrationFormState extends State<RegistrationForm> {
               Row(
                 children: <Widget>[
                   Checkbox(
+                    value: _isCustomer,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isCustomer = value!;
+                      });
+                    },
+                  ),
+                  Text('Customer'),
+                  Checkbox(
+                    value: _isLandOwner,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isLandOwner = value!;
+                      });
+                    },
+                  ),
+                  Text('Land Owner'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Checkbox(
                     value: _termsAccepted,
                     onChanged: (bool? value) {
                       setState(() {
@@ -145,6 +169,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         'address': _addressController.text,
                         'email': _emailController.text,
                         'password': _passwordController.text,
+                        'isCustomer': _isCustomer,
+                        'isLandOwner': _isLandOwner,
                       };
                       print('Form data: $formData');
                     } else {
