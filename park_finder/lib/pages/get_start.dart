@@ -29,13 +29,13 @@ class GetStartedScreen extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                userRegistration.main();
+               
               },
               child: Text('Get Started'),
             ),
             TextButton(
               onPressed: () {
-                logIn.main();
+               
               },
               child: Text('I already have an account'),
             ),
