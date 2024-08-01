@@ -12,9 +12,13 @@ app.use(cors());
 
 // Connect to MongoDB
 const mongoURI = 'mongodb+srv://vidundesu:ANmyfBkf2Fnlnngj@parkfinder.jdubhbw.mongodb.net/?retryWrites=true&w=majority&appName=parkFinder';
+
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.log('MongoDB connection error:', err);
+    process.exit(1); // Exit if connection fails
+  });
 
 // Define a simple User schema
 const UserSchema = new mongoose.Schema({
@@ -50,5 +54,24 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(port, () => console.log(`Server running on port ${port}`));
+// Insert example users
+const insertUsers = async (uname, email, password) => {
+  try {
+    const users = [
+      { name: uname, email: email, password: password },
+    ];
+
+    await User.insertMany(users);
+    console.log('Users added successfully');
+  } catch (error) {
+    console.error('Error adding users:', error);
+  }
+};
+
+// Start the server after inserting users
+const startServer = async () => {
+//   await insertUsers();
+  app.listen(port, () => console.log(`Server running on port ${port}`));
+};
+
+startServer();
