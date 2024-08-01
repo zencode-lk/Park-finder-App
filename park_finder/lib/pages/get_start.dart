@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login.dart' as logIn;
 
 void main() {
   runApp(MyApp());
@@ -33,7 +34,7 @@ class GetStartedScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                // Add your onPressed code here!
+                logIn.main();
               },
               child: Text('I already have an account'),
             ),
