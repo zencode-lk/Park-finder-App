@@ -30,7 +30,7 @@ class GetStartedScreen extends StatelessWidget {
             ElevatedButton(
              onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UserRegister(),
+                  builder: (context) => UserRegister(), //update
                 ));
               },
               child: Text('Get Started'),
