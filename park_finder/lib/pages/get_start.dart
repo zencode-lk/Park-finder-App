@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/login.dart';
 
 import 'user_register.dart';
 
@@ -37,7 +38,9 @@ class GetStartedScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                // Add your onPressed code here!
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context)=> LoginApp(),
+                ));
               },
               child: Text('I already have an account'),
             ),
