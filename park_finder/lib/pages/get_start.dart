@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart' as logIn;
+import 'user_rigistration.dart' as userRegistration;
 
 void main() {
   runApp(MyApp());
@@ -28,7 +29,7 @@ class GetStartedScreen extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                // Add your onPressed code here!
+                userRegistration.main();
               },
               child: Text('Get Started'),
             ),
