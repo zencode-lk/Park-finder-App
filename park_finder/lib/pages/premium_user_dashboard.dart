@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'vehical_registration.dart' as vehicalRegistration;
+import 'vehical_registration.dart';
 
 void main() {
   runApp(MyApp());
@@ -61,7 +62,9 @@ class HomeScreen extends StatelessWidget {
             Spacer(), // To push the button to the bottom of the screen
             ElevatedButton(
               onPressed: () {
-                vehicalRegistration.main();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => VehicleRegistrationForm() 
+                ));
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
