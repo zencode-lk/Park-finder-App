@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'user_login.dart';
+
 class UserRegister extends StatefulWidget {
   @override
   State<UserRegister> createState() => _UserRegisterState();
@@ -13,24 +15,32 @@ class _UserRegisterState extends State<UserRegister> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _registerUser() async {
+  Future<bool> _registerUser() async {
     final url = Uri.parse('http://localhost:3000/api/users');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'name': _firstNameController.text,
-        'email': _emailController.text,
-        'password': _passwordController.text,
-      }),
-    );
 
-    if (response.statusCode == 201) {
-      // User registered successfully
-      print('User registered: ${response.body}');
-    } else {
-      // Handle error
-      print('Failed to register user: ${response.body}');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': _firstNameController.text,
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        // User registered successfully
+        print('User registered: ${response.body}');
+        return true;
+      } else {
+        // Handle error
+        print('Failed to register user: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      return false; // Indicate failure
     }
   }
 
@@ -61,9 +71,13 @@ class _UserRegisterState extends State<UserRegister> {
                 obscureText: true,
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    _registerUser();
+                    bool success = await _registerUser(); 
+                    if (success) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SignInScreen()));
+                    }
                   }
                 },
                 child: Text('Register'),
