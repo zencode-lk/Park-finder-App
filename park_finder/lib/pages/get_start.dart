@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'login.dart' as logIn;
-import 'user_rigistration.dart' as userRegistration;
+import 'package:go_router/go_router.dart';
+import 'package:park_finder/pages/user_login.dart';
+import 'package:park_finder/pages/user_rigistration.dart';
+//import 'login.dart' as logIn;
+//import 'user_rigistration.dart' as userRegistration;
 
 void main() {
   runApp(MyApp());
@@ -29,13 +32,20 @@ class GetStartedScreen extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                userRegistration.main();
+                //userRegistration.main();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context)=> RegistrationForm(), //loginRoute
+                ));
+
               },
               child: Text('Get Started'),
             ),
             TextButton(
               onPressed: () {
-                logIn.main();
+                //logIn.main();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context)=> SignInScreen(),
+                ));
               },
               child: Text('I already have an account'),
             ),
