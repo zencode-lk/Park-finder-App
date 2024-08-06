@@ -53,73 +53,74 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Hello!'),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                    hintText: 'Username',
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+            children: <Widget>[
+              Text('Hello!'),
+              TextFormField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  hintText: 'Username',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your username';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                ),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+              ),
+              Row(
+                children: <Widget>[
+                  Checkbox(
+                    value: _termsAccepted,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _termsAccepted = value!;
+                      });
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: _termsAccepted,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _termsAccepted = value!;
-                        });
-                      },
-                    ),
-                    Text('I agree to the terms and conditions'),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      if (_termsAccepted) {
-                        bool success = await _loginUser();
-                        if (success) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ParkingLocationScreen(),
-                          ));
-                        } else {
-                          print('Login failed');
-                        }
+                  Text('I agree to the terms and conditions'),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    if (_termsAccepted) {
+                      bool success = await _loginUser();
+                      if (success) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ParkingLocationScreen(),
+                        ));
                       } else {
-                        print('Please accept the terms and conditions');
+                        print('Login failed');
                       }
+                    } else {
+                      print('Please accept the terms and conditions');
                     }
-                  },
-                  child: Text('Sign In'),
-                ),
-              ],
-            ),
+                  }
+                },
+                child: Text('Sign In'),
+              ),
+            ],
           ),
         ),
       ),
