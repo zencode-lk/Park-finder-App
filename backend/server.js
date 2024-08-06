@@ -2,10 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
 
 const app = express();
-const port = 3000;
-
+const port = 3001;
+const secretKey = 'qwertyuiopasdfghjklmnbvcxztgv12as2As';
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -54,24 +56,28 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// Insert example users
-const insertUsers = async (uname, email, password) => {
+// User login route
+app.post('/api/login', async (req, res) => {
   try {
-    const users = [
-      { name: uname, email: email, password: password },
-    ];
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-    await User.insertMany(users);
-    console.log('Users added successfully');
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    if (user.password !== password) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '14d' });
+
+    res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
-    console.error('Error adding users:', error);
+    res.status(400).json({ message: error.message });
   }
-};
+});
 
-// Start the server after inserting users
-const startServer = async () => {
-//   await insertUsers();
-  app.listen(port, () => console.log(`Server running on port ${port}`));
-};
-
-startServer();
+// Start the server
+app.listen(port, () => console.log(`Server running on port ${port}`));

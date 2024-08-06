@@ -1,21 +1,6 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Vehicle Registration',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: VehicleRegistrationForm(),
-    );
-  }
-}
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class VehicleRegistrationForm extends StatefulWidget {
   @override
