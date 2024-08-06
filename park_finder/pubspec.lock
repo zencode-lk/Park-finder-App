@@ -160,6 +160,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      sha256: ddc16d34b0d74cb313986918c0f0885a7ba2fc24d8fb8419de75f0015144ccfe
+      url: "https://pub.dev"
+    source: hosted
+    version: "14.2.3"
   google_maps:
     dependency: transitive
     description:
@@ -271,6 +279,17 @@ packages:
       sha256: "976c774dd944a42e83e2467f4cc670daef7eed6295b10b36ae8c85bcbf828235"
       url: "https://pub.dev"
     source: hosted
+
+    version: "3.0.0"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
+=======
     version: "4.0.0"
   location:
     dependency: "direct main"
@@ -296,6 +315,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.1"
+
   matcher:
     dependency: transitive
     description:

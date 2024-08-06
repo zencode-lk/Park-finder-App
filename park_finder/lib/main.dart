@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:park_finder/pages/get_start.dart';
+import 'package:park_finder/pages/user_login.dart';
+import 'package:park_finder/pages/user_rigistration.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,17 +14,44 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routerConfig: _router,
     );
   }
 }
+
+final GoRouter _router = GoRouter(
+  initialLocation: "/RegistrationForm",
+  routes: <RouteBase>[
+    GoRoute(
+      name: "/GetStartedScreen",
+      path: "/GetStartedScreen",
+      builder: (context, state){
+        return RegistrationForm();
+      },
+      ),
+    GoRoute(
+      name: "/RegistrationForm",
+      path: "/RegistrationForm",
+      builder: (context, state){
+        return GetStartedScreen();
+      },
+      ),
+      GoRoute(
+      name: "/SignInScreen",
+      path: "/SignInScreen",
+      builder: (context, state){
+        return SignInScreen();
+      },
+      ),
+  ],
+  );
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
