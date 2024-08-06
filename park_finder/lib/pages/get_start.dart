@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:park_finder/pages/user_login.dart';
-import 'package:park_finder/pages/user_rigistration.dart';
+import 'package:park_finder/pages/user_register.dart';
 //import 'login.dart' as logIn;
 //import 'user_rigistration.dart' as userRegistration;
 
@@ -37,7 +37,7 @@ class GetStartedScreen extends StatelessWidget {
               onPressed: () {
                 //userRegistration.main();
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=> RegistrationForm(), //loginRoute
+                  builder: (context)=> UserRegister(), //loginRoute
                 ));
 
 

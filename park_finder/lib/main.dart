@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:park_finder/pages/get_start.dart';
 import 'package:park_finder/pages/user_login.dart';
-import 'package:park_finder/pages/user_rigistration.dart';
+import 'package:park_finder/pages/user_register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +33,7 @@ final GoRouter _router = GoRouter(
       name: "/GetStartedScreen",
       path: "/GetStartedScreen",
       builder: (context, state){
-        return RegistrationForm();
+        return UserRegister();
       },
       ),
     GoRoute(
