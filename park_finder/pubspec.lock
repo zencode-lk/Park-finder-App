@@ -188,26 +188,26 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_android
-      sha256: c8377573754f0da06dab69c1b66c6a825aa10e9de60297dc157d94cdd7653d10
+      sha256: f34fec69957739245d732667429a6831f97419261f6f3c31cc6489eb3976444e
       url: "https://pub.dev"
     source: hosted
-    version: "2.12.2"
+    version: "2.13.0"
   google_maps_flutter_ios:
     dependency: transitive
     description:
       name: google_maps_flutter_ios
-      sha256: a6e3c6ecdda6c985053f944be13a0645ebb919da2ef0f5bc579c5e1670a5b2a8
+      sha256: "75244e8d24fa85cf30c34abf42e38367fb5d0fa00bbc6ccc2eef0234683e84a8"
       url: "https://pub.dev"
     source: hosted
-    version: "2.10.0"
+    version: "2.11.0"
   google_maps_flutter_platform_interface:
     dependency: transitive
     description:
       name: google_maps_flutter_platform_interface
-      sha256: bd60ca330e3c7763b95b477054adec338a522d982af73ecc520b232474063ac5
+      sha256: "4f6930fd668bf5d40feb2695d5695dbc0c35e5542b557a34ad35be491686d2ba"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.0"
+    version: "2.9.0"
   google_maps_flutter_web:
     dependency: transitive
     description:
@@ -279,17 +279,6 @@ packages:
       sha256: "976c774dd944a42e83e2467f4cc670daef7eed6295b10b36ae8c85bcbf828235"
       url: "https://pub.dev"
     source: hosted
-
-    version: "3.0.0"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
-      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.0"
-=======
     version: "4.0.0"
   location:
     dependency: "direct main"
@@ -315,7 +304,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.1"
-
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   matcher:
     dependency: transitive
     description:
