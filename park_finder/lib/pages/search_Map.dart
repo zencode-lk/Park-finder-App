@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(MyApp());
@@ -21,10 +23,11 @@ class ParkingLocationScreen extends StatefulWidget {
 }
 
 class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
-  GoogleMapController? mapController; // Make it nullable
- LatLng _currentLocation = LatLng(23.0525, 72.5667);
+  GoogleMapController? mapController;
+  LatLng _currentLocation = LatLng(40.7580, -73.9855); // Default location
   final Set<Marker> _markers = {};
   final Location _location = Location();
+ // Replace with your API key
 
   @override
   void initState() {
@@ -51,37 +54,66 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
       }
 
       final LocationData locationData = await _location.getLocation();
+      print("Latitude: ${locationData.latitude}, Longitude: ${locationData.longitude}"); // Debugging
       setState(() {
         _currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
         _addMarkers(); // Add markers after getting the location
+        _fetchNearbyPlaces(); // Fetch nearby places
       });
     } catch (e) {
       print("Error getting location: $e");
     }
   }
 
-  void _addMarkers() {
-    if (_currentLocation == null) return; // Ensure current location is not null
+  Future<void> _fetchNearbyPlaces() async {
+   final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE';
+   print(url);
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List results = data['results'];
+        
+        setState(() {
+          _markers.clear();
+          for (var place in results) {
+            final LatLng placeLocation = LatLng(
+              place['geometry']['location']['lat'],
+              place['geometry']['location']['lng'],
+            );
+            _markers.add(
+              Marker(
+                markerId: MarkerId(place['place_id']),
+                position: placeLocation,
+                infoWindow: InfoWindow(title: place['name']),
+              ),
+            );
+          }
+        });
+      } else {
+        print("Failed to load places");
+      }
+    } catch (e) {
+      print("Error fetching places: $e");
+    }
+  }
 
+  void _addMarkers() {
+    // Add the marker for the current location
     final List<Marker> markers = [
       Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(_currentLocation!.latitude + 0.01, _currentLocation!.longitude),
-        infoWindow: InfoWindow(title: 'Parking Location 1'),
+        markerId: MarkerId('current_location'),
+        position: _currentLocation,
+        infoWindow: InfoWindow(title: 'Your Location'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
       ),
-      Marker(
-        markerId: MarkerId('2'),
-        position: LatLng(_currentLocation!.latitude, _currentLocation!.longitude + 0.01),
-        infoWindow: InfoWindow(title: 'Parking Location 2'),
-      ),
-      // Add more markers as needed
     ];
 
     setState(() {
       _markers.addAll(markers);
-      if (mapController != null && _currentLocation != null) {
+      if (mapController != null) {
         mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(_currentLocation!, 14.0),
+          CameraUpdate.newLatLngZoom(_currentLocation, 14.0),
         );
       }
     });
@@ -105,12 +137,12 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                     mapController = controller;
                     if (_currentLocation != null) {
                       mapController!.animateCamera(
-                        CameraUpdate.newLatLngZoom(_currentLocation!, 14.0),
+                        CameraUpdate.newLatLngZoom(_currentLocation, 14.0),
                       );
                     }
                   },
                   initialCameraPosition: CameraPosition(
-                    target: _currentLocation ?? LatLng(0, 0),
+                    target: _currentLocation,
                     zoom: 14.0,
                   ),
                   markers: _markers,
@@ -120,9 +152,9 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                   left: 10,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_currentLocation != null && mapController != null) {
+                      if (mapController != null) {
                         mapController!.animateCamera(
-                          CameraUpdate.newLatLngZoom(_currentLocation!, 14.0),
+                          CameraUpdate.newLatLngZoom(_currentLocation, 14.0),
                         );
                       }
                     },
@@ -132,50 +164,8 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
               ],
             ),
           ),
-          // Parking locations list (can be updated based on fetched data)
-          ListTile(
-            leading: Icon(Icons.location_pin),
-            title: Text("LNBTI's car park"),
-            subtitle: Text('High level rd, Maharagama'),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Nearest'),
-                Text('50m'),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.local_parking),
-            title: Text('Silva\'s car park'),
-            subtitle: Text('Old kottawa rd, Maharagama'),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('170m'),
-                Text('(5 Slots)'),
-              ],
-            ),
-          ),
-          Spacer(),
-          // Bottom navigation bar
-          BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.menu),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.local_parking),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: '',
-              ),
-            ],
-            onTap: (index) {},
-          ),
+          // Additional widgets for parking locations list
+          // ...
         ],
       ),
     );

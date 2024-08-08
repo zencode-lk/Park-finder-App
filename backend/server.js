@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-
+const axios = require('axios');
 
 const app = express();
-const port = 3001;
+const port = 3000;
 const secretKey = 'qwertyuiopasdfghjklmnbvcxztgv12as2As';
 // Middleware
 app.use(bodyParser.json());
@@ -78,6 +78,26 @@ app.post('/api/login', async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+
+app.get('/api/places', async (req, res) => {
+  const { location, radius, key } = req.query;
+  console.log(req.query);
+  try {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json`, {
+      params: {
+        location,
+        radius,
+        type: 'parking',
+        key
+      }
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
