@@ -12,8 +12,11 @@ class UserRegister extends StatefulWidget {
 class _UserRegisterState extends State<UserRegister> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  bool _isCustomer = true;
 
   Future<bool> _registerUser() async {
     final url = Uri.parse('http://localhost:3000/api/users');
@@ -23,9 +26,12 @@ class _UserRegisterState extends State<UserRegister> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'name': _firstNameController.text,
+          'fname': _firstNameController.text,
+          'lname': _lastNameController.text,
           'email': _emailController.text,
           'password': _passwordController.text,
+          'confirmPassword': _confirmPasswordController.text,
+          'isCustomer': _isCustomer, // Include the checkbox state
         }),
       );
 
@@ -61,6 +67,10 @@ class _UserRegisterState extends State<UserRegister> {
                 decoration: InputDecoration(labelText: 'First Name'),
               ),
               TextFormField(
+                controller: _lastNameController,
+                decoration: InputDecoration(labelText: 'Last Name'),
+              ),
+              TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
@@ -70,10 +80,37 @@ class _UserRegisterState extends State<UserRegister> {
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
               ),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(labelText: 'Confirm Password'),
+                obscureText: true,
+              ),
+              Row(
+                children: [
+                  Text('Customer'),
+                  Checkbox(
+                    value: _isCustomer,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isCustomer = value!;
+                      });
+                    },
+                  ),
+                  Text('Land Owner'),
+                  Checkbox(
+                    value: !_isCustomer,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isCustomer = !value!;
+                      });
+                    },
+                  ),
+                ],
+              ),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    bool success = await _registerUser(); 
+                    bool success = await _registerUser();
                     if (success) {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => SignInScreen()));
@@ -89,3 +126,4 @@ class _UserRegisterState extends State<UserRegister> {
     );
   }
 }
+
