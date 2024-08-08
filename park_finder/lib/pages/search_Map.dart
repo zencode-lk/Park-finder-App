@@ -28,6 +28,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   final Set<Marker> _markers = {};
   final Location _location = Location();
  // Replace with your API key
+List<dynamic> _places = [];
 
   @override
   void initState() {
@@ -66,17 +67,18 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   }
 
   Future<void> _fetchNearbyPlaces() async {
-   final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE';
+   final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE'; //this radius should be reduced to 1000 when in demo
    print(url);
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final List results = data['results'];
+         final List results = data['results'];
         
         setState(() {
+           _places = results;
           _markers.clear();
-          for (var place in results) {
+           for (var place in _places) {
             final LatLng placeLocation = LatLng(
               place['geometry']['location']['lat'],
               place['geometry']['location']['lng'],
@@ -88,7 +90,10 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                 infoWindow: InfoWindow(title: place['name']),
               ),
             );
+             print(place['name']);
+            
           }
+         
         });
       } else {
         print("Failed to load places");
@@ -113,61 +118,99 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
       _markers.addAll(markers);
       if (mapController != null) {
         mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(_currentLocation, 14.0),
+          CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
         );
       }
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Your Nearest Parking Location...'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 300,
-            child: Stack(
-              children: [
-                GoogleMap(
-                  onMapCreated: (controller) {
-                    mapController = controller;
-                    if (_currentLocation != null) {
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Your Nearest Parking Location...'),
+      centerTitle: true,
+    ),
+    body: Column(
+      children: [
+        Container(
+          height: 300,
+          child: Stack(
+            children: [
+              GoogleMap(
+                onMapCreated: (controller) {
+                  mapController = controller;
+                  if (_currentLocation != null) {
+                    mapController!.animateCamera(
+                      CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
+                    );
+                  }
+                },
+                initialCameraPosition: CameraPosition(
+                  target: _currentLocation,
+                  zoom: 16.0,
+                ),
+                markers: _markers,
+              ),
+              Positioned(
+                bottom: 10,
+                left: 10,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (mapController != null) {
                       mapController!.animateCamera(
-                        CameraUpdate.newLatLngZoom(_currentLocation, 14.0),
+                        CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
                       );
                     }
                   },
-                  initialCameraPosition: CameraPosition(
-                    target: _currentLocation,
-                    zoom: 14.0,
-                  ),
-                  markers: _markers,
+                  child: Text('Re-centre'),
                 ),
-                Positioned(
-                  bottom: 10,
-                  left: 10,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (mapController != null) {
-                        mapController!.animateCamera(
-                          CameraUpdate.newLatLngZoom(_currentLocation, 14.0),
-                        );
-                      }
-                    },
-                    child: Text('Re-centre'),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // Additional widgets for parking locations list
-          // ...
-        ],
-      ),
-    );
-  }
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _places.length,
+            itemBuilder: (context, index) {
+              final place = _places[index];
+              return ListTile(
+                leading: Icon(Icons.location_pin),
+                title: Text(place['name'] ?? 'No Name'), // Display place name
+                subtitle: Text(place['vicinity']??'No Address'), // Display address
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Nearest'),
+                    Text('50m'), // Placeholder text
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        Spacer(),
+        // Bottom navigation bar
+        BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_parking),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '',
+            ),
+          ],
+          onTap: (index) {},
+        ),
+      ],
+    ),
+  );
+}
+
 }
