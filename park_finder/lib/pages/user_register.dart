@@ -12,11 +12,9 @@ class UserRegister extends StatefulWidget {
 class _UserRegisterState extends State<UserRegister> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  bool _isCustomer = true;
 
   Future<bool> _registerUser() async {
     final url = Uri.parse('http://localhost:3000/api/users');
@@ -26,12 +24,9 @@ class _UserRegisterState extends State<UserRegister> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'fname': _firstNameController.text,
-          'lname': _lastNameController.text,
+          'name': _firstNameController.text,
           'email': _emailController.text,
           'password': _passwordController.text,
-          'confirmPassword': _confirmPasswordController.text,
-          'isCustomer': _isCustomer, // Include the checkbox state
         }),
       );
 
@@ -50,80 +45,97 @@ class _UserRegisterState extends State<UserRegister> {
     }
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
-              TextFormField(
-                controller: _confirmPasswordController,
-                decoration: InputDecoration(labelText: 'Confirm Password'),
-                obscureText: true,
-              ),
-              Row(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.white, Color(0xFF9E9EEC)],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Customer'),
-                  Checkbox(
-                    value: _isCustomer,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _isCustomer = value!;
-                      });
-                    },
+                  SizedBox(height: 50), // Add space at the top
+                  TextFormField(
+                    controller: _firstNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
                   ),
-                  Text('Land Owner'),
-                  Checkbox(
-                    value: !_isCustomer,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _isCustomer = !value!;
-                      });
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF0C0C5D), // Button color
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 60.0, vertical: 15.0),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        bool success = await _registerUser();
+                        if (success) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignInScreen()));
+                        }
+                      }
                     },
+                    child: Text('Next'),
                   ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    bool success = await _registerUser();
-                    if (success) {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignInScreen()));
-                    }
-                  }
-                },
-                child: Text('Register'),
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
