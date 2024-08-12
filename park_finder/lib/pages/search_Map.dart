@@ -128,16 +128,44 @@ List<dynamic> _places = [];
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text('Your Nearest Parking Location...'),
-      centerTitle: true,
     ),
     body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Text(
+          textAlign: TextAlign.center,
+          'Your Nearest Parking Location...',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,         
+          ),
+        ),
+        Text(
+          textAlign: TextAlign.center,
+          'Please select a parking loacation for navigation',
+          style: TextStyle(
+            fontSize: 19,         
+          ),
+        ),
+        SizedBox(height: 20),
         Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 20, 20, 83),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25)
+            )
+          ),
           height: 300,
+          width: 375,
+          
           child: Stack(
             children: [
               GoogleMap(
+
                 onMapCreated: (controller) {
                   mapController = controller;
                   if (_currentLocation != null) {
@@ -163,7 +191,12 @@ Widget build(BuildContext context) {
                       );
                     }
                   },
-                  child: Text('Re-centre'),
+                  child: Text(
+                    'Re-centre',
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 23, 117, 239), 
+                    ),
+                  ),
                 ),
               ),
             ],
