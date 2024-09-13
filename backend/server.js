@@ -12,8 +12,9 @@ const secretKey = 'qwertyuiopasdfghjklmnbvcxztgv12as2As';
 app.use(bodyParser.json());
 app.use(cors());
 
-// Connect to MongoDB
-const mongoURI = 'mongodb+srv://vidundesu:ANmyfBkf2Fnlnngj@parkfinder.jdubhbw.mongodb.net/?retryWrites=true&w=majority&appName=parkFinder';
+
+// Connect to MongoDB with the correct database
+const mongoURI = 'mongodb+srv://vidundesu:ANmyfBkf2Fnlnngj@parkfinder.jdubhbw.mongodb.net/parkFinderDb?retryWrites=true&w=majority&appName=parkFinder';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
@@ -22,6 +23,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     process.exit(1); // Exit if connection fails
   });
 
+
 // Define a simple User schema
 const UserSchema = new mongoose.Schema({
   name: String,
@@ -29,7 +31,7 @@ const UserSchema = new mongoose.Schema({
   password: String,
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('Users', UserSchema);
 
 // Routes
 app.get('/', (req, res) => res.send('API is running'));
@@ -100,4 +102,4 @@ app.get('/api/places', async (req, res) => {
 
 
 // Start the server
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, '0.0.0.0', () => console.log(`Server running on port ${port}`));

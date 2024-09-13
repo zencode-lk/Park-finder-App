@@ -22,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final storage = FlutterSecureStorage();
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://localhost:3000/api/login');
+    final url = Uri.parse('http://192.168.133.249:3000/api/login');
 
     try {
       final response = await http.post(
@@ -46,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
         return true;
       } else {
         print('Failed to log in: ${response.body}');
-        // Show error message or handle the error
+       
         return false;
       }
     } catch (e) {
@@ -193,7 +193,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 140, vertical: 20),
                         ),
                         onPressed: () async {
-                          if (_formKey.currentState?.validate() ?? false) {
+                          
                             if (_termsAccepted) {
                               bool success = await _loginUser();
                               if (success) {
@@ -206,7 +206,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             } else {
                               print('Please accept the terms and conditions');
                             }
-                          }
+                          
                         },
                         child: Text(
                           'Sign In',
