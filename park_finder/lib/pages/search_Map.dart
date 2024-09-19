@@ -67,7 +67,7 @@ List<dynamic> _places = [];
   }
 
   Future<void> _fetchNearbyPlaces() async {
-   final String url = 'http://192.168.133.249:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE'; //this radius should be reduced to 1000 when in demo
+   final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE'; //this radius should be reduced to 1000 when in demo
    print(url);
     try {
       final response = await http.get(Uri.parse(url));
