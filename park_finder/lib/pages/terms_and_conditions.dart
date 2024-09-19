@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
 
+// Entry point of the application
+void main() {
+  runApp(MyApp());
+}
 
+// Main application widget
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Park Finder',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: TermsAndConditionsPage(), // Set TermsAndConditionsPage as the home
+    );
+  }
+}
 
+// Terms and Conditions Page
 class TermsAndConditionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,7 +58,6 @@ class TermsAndConditionsPage extends StatelessWidget {
               'We value your privacy. Please refer to our privacy policy to learn more about how we handle your data...',
               style: TextStyle(fontSize: 16),
             ),
-            
           ],
         ),
       ),
