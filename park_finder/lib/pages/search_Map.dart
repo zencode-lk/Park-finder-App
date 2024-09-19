@@ -67,7 +67,7 @@ List<dynamic> _places = [];
   }
 
   Future<void> _fetchNearbyPlaces() async {
-   final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE'; //this radius should be reduced to 1000 when in demo
+   final String url = 'http://192.168.133.249:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE'; //this radius should be reduced to 1000 when in demo
    print(url);
     try {
       final response = await http.get(Uri.parse(url));
@@ -128,44 +128,16 @@ List<dynamic> _places = [];
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
+      title: Text('Your Nearest Parking Location...'),
+      centerTitle: true,
     ),
     body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          textAlign: TextAlign.center,
-          'Your Nearest Parking Location...',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,         
-          ),
-        ),
-        Text(
-          textAlign: TextAlign.center,
-          'Please select a parking loacation for navigation',
-          style: TextStyle(
-            fontSize: 19,         
-          ),
-        ),
-        SizedBox(height: 20),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 20, 20, 83),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25)
-            )
-          ),
           height: 300,
-          width: 375,
-          
           child: Stack(
             children: [
               GoogleMap(
-
                 onMapCreated: (controller) {
                   mapController = controller;
                   if (_currentLocation != null) {
@@ -191,12 +163,7 @@ Widget build(BuildContext context) {
                       );
                     }
                   },
-                  child: Text(
-                    'Re-centre',
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 23, 117, 239), 
-                    ),
-                  ),
+                  child: Text('Re-centre'),
                 ),
               ),
             ],

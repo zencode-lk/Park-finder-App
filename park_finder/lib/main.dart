@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:park_finder/pages/get_start.dart';
 import 'package:park_finder/pages/user_login.dart';
 import 'package:park_finder/pages/user_register.dart';
-import 'package:park_finder/pages/terms_and_conditions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,15 +50,8 @@ final GoRouter _router = GoRouter(
         return SignInScreen();
       },
       ),
-   GoRoute(
-      name: "/TermsAndConditions",
-      path: "/TermsAndConditions",
-      builder: (context, state) {
-        return MyApp();
-      },
-    ),
   ],
-);
+  );
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
