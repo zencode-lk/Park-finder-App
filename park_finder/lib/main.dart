@@ -55,7 +55,7 @@ final GoRouter _router = GoRouter(
       name: "/TermsAndConditions",
       path: "/TermsAndConditions",
       builder: (context, state) {
-        return TermsAndConditionsPage();
+        return MyApp();
       },
     ),
   ],
