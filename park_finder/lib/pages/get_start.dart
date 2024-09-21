@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:park_finder/pages/user-land_owner.dart';
 import 'package:park_finder/pages/user_login.dart';
 import 'package:park_finder/pages/user_register.dart';
 
@@ -120,7 +121,7 @@ class GetStartedScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserRegister(),
+                    builder: (context) => UserLandOwner(),
                   ));
                 },
                 style: ElevatedButton.styleFrom(
@@ -197,3 +198,4 @@ class WaveClipper extends CustomClipper<Path> {
     return false;
   }
 }
+
