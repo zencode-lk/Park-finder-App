@@ -29,9 +29,11 @@ class VehicleRegistrationForm extends StatefulWidget {
 
 class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _formKey = GlobalKey<FormState>();
+  
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
+  final _nicController = TextEditingController();
   bool _isLoading = false;
   
   Future<void> _registerVehicle(Map<String, String> formData) async {
@@ -98,6 +100,11 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                           controller: _carNumberController,
                           label: 'Car Number',
                         ),
+                        SizedBox(height: 16),
+                        _buildTextFormField(
+                          controller: _nicController,
+                          label: 'NIC Number',
+                        ),
                         SizedBox(height: 24),
                         ElevatedButton(
                           onPressed: _isLoading
@@ -112,6 +119,7 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                                       'carMake': _carMakeController.text,
                                       'carModel': _carModelController.text,
                                       'carNumber': _carNumberController.text,
+                                      'nicNumber': _nicController.text,
                                     };
                                     await _registerVehicle(formData);
 
