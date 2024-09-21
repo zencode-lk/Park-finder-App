@@ -4,6 +4,8 @@ import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:park_finder/pages/user_register.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -124,6 +126,77 @@ List<dynamic> _places = [];
     });
   }
 
+  void _showPremiumPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+          content: Container(
+            width: 300,
+            height: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Click here to join as a premium user today,Shedule",
+                  
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  )
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Shedule",
+                  
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18, 
+                    fontWeight: FontWeight.normal,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  )
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => UserRegister(),
+                    ));// Close the popup
+                  },
+                  child: Text(
+                    "PREMIUM",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(20, 20, 83, 1),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Background color
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    textStyle: TextStyle(fontSize: 16),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Just for LKR 10,000",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12, 
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  )
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -239,7 +312,11 @@ Widget build(BuildContext context) {
               label: '',
             ),
           ],
-          onTap: (index) {},
+          onTap: (index) {
+            if (index == 0) {
+                _showPremiumPopup(); // Show pop-up when the schedule button is pressed
+            }
+          },
         ),
       ],
     ),

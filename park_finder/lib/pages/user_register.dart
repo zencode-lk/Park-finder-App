@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:park_finder/pages/vehical_registration.dart';
 import 'dart:convert';
 
 import 'user_login.dart';
@@ -48,6 +49,9 @@ class _UserRegisterState extends State<UserRegister> {
  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+      ),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -119,15 +123,22 @@ class _UserRegisterState extends State<UserRegister> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 60.0, vertical: 15.0),
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        bool success = await _registerUser();
-                        if (success) {
+                    // onPressed: () async {
+                    //   if (_formKey.currentState?.validate() ?? false) {
+                    //     bool success = await _registerUser();
+                    //     if (success) {
+                    //       Navigator.of(context).push(MaterialPageRoute(
+                    //       builder: (context) => VehicleRegistrationForm()
+                    //       ));
+                    //     }
+                    //   }
+                    // },
+                    onPressed: () {
+                          // Navigate to UserPage
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SignInScreen()));
-                        }
-                      }
-                    },
+                            builder: (context) => VehicleRegistrationForm(),
+                          ));
+                        },
                     child: Text('Next'),
                   ),
                 ],

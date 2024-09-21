@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:park_finder/pages/premium_user_dashboard.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,8 +24,7 @@ class MyApp extends StatelessWidget {
 
 class VehicleRegistrationForm extends StatefulWidget {
   @override
-  _VehicleRegistrationFormState createState() =>
-      _VehicleRegistrationFormState();
+  _VehicleRegistrationFormState createState() => _VehicleRegistrationFormState();
 }
 
 class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
@@ -31,53 +32,13 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
-  bool _isLoading = false;
-
-  @override
-  void dispose() {
-    _carMakeController.dispose();
-    _carModelController.dispose();
-    _carNumberController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _registerVehicle(Map<String, String> formData) async {
-    try {
-      final response = await http.post(
-        Uri.parse(
-            'https://yourapi.com/endpoint'), // Replace with your API endpoint
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(formData),
-      );
-
-      if (response.statusCode == 200) {
-        // Handle successful response
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Vehicle registered successfully')),
-        );
-      } else {
-        // Handle error response
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to register vehicle')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred: $e')),
-      );
-    }
-  }
+  bool _isLoading = false; // Ensure _isLoading is initialized
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Vehicle Registration',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.deepPurple,
-        elevation: 4,
+        title: Text('Vehicle Registration'),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -91,8 +52,7 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(maxWidth: 600), // Max width for the form
+              constraints: BoxConstraints(maxWidth: 600), // Max width for the form
               child: Column(
                 mainAxisSize: MainAxisSize.min, // Adjusts to the content size
                 children: <Widget>[
@@ -128,8 +88,7 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                           onPressed: _isLoading
                               ? null
                               : () async {
-                                  if (_formKey.currentState?.validate() ??
-                                      false) {
+                                  if (_formKey.currentState?.validate() ?? false) {
                                     setState(() {
                                       _isLoading = true;
                                     });
@@ -144,6 +103,10 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                                     setState(() {
                                       _isLoading = false;
                                     });
+
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeScreen()));
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
@@ -176,28 +139,36 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
     );
   }
 
+  // TextFormField builder to avoid redundancy
   Widget _buildTextFormField({
     required TextEditingController controller,
     required String label,
   }) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-        labelStyle: TextStyle(fontSize: 16, color: Colors.grey[600]),
-      ),
+      decoration: InputDecoration(labelText: label),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter $label';
+          return 'Please enter your $label';
         }
         return null;
       },
     );
   }
+
+  Future<void> _registerVehicle(Map<String, String> formData) async {
+    // Your API call logic here
+    final response = await http.post(
+      Uri.parse('https://yourapi.com/register_vehicle'),
+      body: jsonEncode(formData),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      print('Vehicle registered successfully!');
+    } else {
+      print('Failed to register vehicle');
+    }
+  }
 }
+
