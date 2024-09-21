@@ -32,7 +32,22 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
-  bool _isLoading = false; // Ensure _isLoading is initialized
+  bool _isLoading = false;
+  
+  Future<void> _registerVehicle(Map<String, String> formData) async {
+    // Your API call logic here
+    final response = await http.post(
+      Uri.parse('https://yourapi.com/register_vehicle'),
+      body: jsonEncode(formData),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      print('Vehicle registered successfully!');
+    } else {
+      print('Failed to register vehicle');
+    }
+  } // Ensure _isLoading is initialized
 
   @override
   Widget build(BuildContext context) {
@@ -139,36 +154,28 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
     );
   }
 
-  // TextFormField builder to avoid redundancy
   Widget _buildTextFormField({
     required TextEditingController controller,
     required String label,
   }) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+        labelStyle: TextStyle(fontSize: 16, color: Colors.grey[600]),
+      ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter your $label';
+          return 'Please enter $label';
         }
         return null;
       },
     );
   }
-
-  Future<void> _registerVehicle(Map<String, String> formData) async {
-    // Your API call logic here
-    final response = await http.post(
-      Uri.parse('https://yourapi.com/register_vehicle'),
-      body: jsonEncode(formData),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode == 200) {
-      print('Vehicle registered successfully!');
-    } else {
-      print('Failed to register vehicle');
-    }
-  }
 }
-
