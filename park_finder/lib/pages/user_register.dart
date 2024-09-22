@@ -13,6 +13,8 @@ class UserRegister extends StatefulWidget {
 class _UserRegisterState extends State<UserRegister> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _userNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _nicController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -26,10 +28,13 @@ class _UserRegisterState extends State<UserRegister> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'name': _firstNameController.text,
+          'fristName': _firstNameController.text,
+          'lastName': _lastNameController.text,
+          'userName': _userNameController.text,
           'email': _emailController.text,
           'nic': _nicController.text,
           'password': _passwordController.text,
+          'comfirmPassword': _confirmPasswordController.text,
         }),
       );
 
@@ -75,7 +80,27 @@ class _UserRegisterState extends State<UserRegister> {
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
-                      labelText: 'Username',
+                      labelText: 'Fristname',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _lastNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Last name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _userNameController,
+                    decoration: InputDecoration(
+                      labelText: 'User name',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),

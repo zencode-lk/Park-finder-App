@@ -17,15 +17,16 @@ class VehicleRegistrationForm extends StatefulWidget {
 
 class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _formKey = GlobalKey<FormState>();
+  
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
+
   bool _isSubmitting = false;
   double _progressValue = 0.0;
 
   Future<void> _registerVehicle() async {
     final url = Uri.parse('http://localhost:3000/api/vehicles/register');
-
     final response = await http.post(
       url,
       body: jsonEncode({
@@ -127,6 +128,11 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                         _buildTextFormField(
                           controller: _carNumberController,
                           label: 'Car Number',
+                        ),
+                        SizedBox(height: 16),
+                        _buildTextFormField(
+                          controller: _nicController,
+                          label: 'NIC Number',
                         ),
                         SizedBox(height: 24),
                         // Show progress bar while submitting
