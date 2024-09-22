@@ -69,41 +69,41 @@ List<dynamic> _places = [];
   }
 
   Future<void> _fetchNearbyPlaces() async {
-   final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000&key=AIzaSyBgR3SW80TThORkVhmG6vuv4JhLk4P8pyE'; //this radius should be reduced to 1000 when in demo
-   print(url);
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-         final List results = data['results'];
-        
-        setState(() {
-           _places = results;
-          _markers.clear();
-           for (var place in _places) {
-            final LatLng placeLocation = LatLng(
-              place['geometry']['location']['lat'],
-              place['geometry']['location']['lng'],
-            );
-            _markers.add(
-              Marker(
-                markerId: MarkerId(place['place_id']),
-                position: placeLocation,
-                infoWindow: InfoWindow(title: place['name']),
-              ),
-            );
-             print(place['name']);
-            
-          }
-         
-        });
-      } else {
-        print("Failed to load places");
-      }
-    } catch (e) {
-      print("Error fetching places: $e");
+  final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=1000';
+  print(url);
+  
+  try {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List results = data['results'];
+
+      setState(() {
+        _places = results;
+        _markers.clear();
+        for (var place in _places) {
+          final LatLng placeLocation = LatLng(
+            place['geometry']['location']['lat'],
+            place['geometry']['location']['lng'],
+          );
+          _markers.add(
+            Marker(
+              markerId: MarkerId(place['place_id']),
+              position: placeLocation,
+              infoWindow: InfoWindow(title: place['name']),
+            ),
+          );
+          print(place['name']);
+        }
+      });
+    } else {
+      print("Failed to load places");
     }
+  } catch (e) {
+    print("Error fetching places: $e");
   }
+}
+
 
   void _addMarkers() {
     // Add the marker for the current location
