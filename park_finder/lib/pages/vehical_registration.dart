@@ -1,30 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async'; // For Future and delay
 
-import 'package:park_finder/pages/premium_user_dashboard.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Vehicle Registration',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: VehicleRegistrationForm(),
-    );
-  }
-}
+import 'user_login.dart'; // Import the user login page
 
 class VehicleRegistrationForm extends StatefulWidget {
+  final String userId;
+
+  VehicleRegistrationForm({required this.userId});
+
   @override
-  _VehicleRegistrationFormState createState() => _VehicleRegistrationFormState();
+  _VehicleRegistrationFormState createState() =>
+      _VehicleRegistrationFormState();
 }
 
 class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
@@ -33,23 +21,64 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
-  final _nicController = TextEditingController();
-  bool _isLoading = false;
-  
-  Future<void> _registerVehicle(Map<String, String> formData) async {
-    // Your API call logic here
+
+  bool _isSubmitting = false;
+  double _progressValue = 0.0;
+
+  Future<void> _registerVehicle() async {
+    final url = Uri.parse('http://localhost:3000/api/vehicles/register');
     final response = await http.post(
-      Uri.parse('https://yourapi.com/register_vehicle'),
-      body: jsonEncode(formData),
+      url,
+      body: jsonEncode({
+        'make': _carMakeController.text,
+        'model': _carModelController.text,
+        'plateNumber': _carNumberController.text,
+        'userId': widget.userId,
+      }),
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       print('Vehicle registered successfully!');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SignInScreen()),
+      );
     } else {
-      print('Failed to register vehicle');
+      print('Failed to register vehicle: ${response.body}');
     }
-  } // Ensure _isLoading is initialized
+  }
+
+  Future<void> _simulateLoading() async {
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    for (int i = 0; i <= 100; i++) {
+      await Future.delayed(Duration(milliseconds: 30)); // Delay for smooth progress
+      setState(() {
+        _progressValue = i / 100; // Update progress value continuously
+      });
+    }
+
+    // Once progress completes, register the vehicle
+    await _registerVehicle();
+
+    setState(() {
+      _isSubmitting = false; // Reset the loading state after registration
+      _progressValue = 0.0; // Reset progress bar after submission
+    });
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String label,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(labelText: label),
+      validator: (value) => value!.isEmpty ? 'Enter $label' : null,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +98,9 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 600), // Max width for the form
+              constraints: BoxConstraints(maxWidth: 600),
               child: Column(
-                mainAxisSize: MainAxisSize.min, // Adjusts to the content size
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
                     'Register Your Vehicle',
@@ -106,30 +135,26 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                           label: 'NIC Number',
                         ),
                         SizedBox(height: 24),
+                        // Show progress bar while submitting
+                        if (_isSubmitting)
+                          Column(
+                            children: [
+                              LinearProgressIndicator(
+                                value: _progressValue,
+                                backgroundColor: Colors.grey[200],
+                                color: Colors.deepPurple,
+                              ),
+                              SizedBox(height: 20),
+                            ],
+                          ),
+                        // Register button
                         ElevatedButton(
-                          onPressed: _isLoading
-                              ? null
+                          onPressed: _isSubmitting
+                              ? null // Disable button while submitting
                               : () async {
-                                  if (_formKey.currentState?.validate() ?? false) {
-                                    setState(() {
-                                      _isLoading = true;
-                                    });
-
-                                    final formData = {
-                                      'carMake': _carMakeController.text,
-                                      'carModel': _carModelController.text,
-                                      'carNumber': _carNumberController.text,
-                                      'nicNumber': _nicController.text,
-                                    };
-                                    await _registerVehicle(formData);
-
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
-
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) => HomeScreen()));
+                                  if (_formKey.currentState?.validate() ??
+                                      false) {
+                                    await _simulateLoading();
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
@@ -142,13 +167,13 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                             elevation: 6,
                             textStyle: TextStyle(fontSize: 18),
                           ),
-                          child: _isLoading
-                              ? CircularProgressIndicator(color: Colors.white)
-                              : Text(
-                                  'Register',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
+                          child: Text(
+                            _isSubmitting ? 'Registering...' : 'Register',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -159,31 +184,6 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextFormField({
-    required TextEditingController controller,
-    required String label,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-        labelStyle: TextStyle(fontSize: 16, color: Colors.grey[600]),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter $label';
-        }
-        return null;
-      },
     );
   }
 }

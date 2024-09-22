@@ -16,11 +16,12 @@ class _UserRegisterState extends State<UserRegister> {
   final _lastNameController = TextEditingController();
   final _userNameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _nicController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   Future<bool> _registerUser() async {
-    final url = Uri.parse('http://localhost:3000/api/users');
+    final url = Uri.parse('http://localhost:3000/api/users/register');
 
     try {
       final response = await http.post(
@@ -31,6 +32,7 @@ class _UserRegisterState extends State<UserRegister> {
           'lastName': _lastNameController.text,
           'userName': _userNameController.text,
           'email': _emailController.text,
+          'nic': _nicController.text,
           'password': _passwordController.text,
           'comfirmPassword': _confirmPasswordController.text,
         }),
@@ -51,7 +53,7 @@ class _UserRegisterState extends State<UserRegister> {
     }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -117,6 +119,17 @@ class _UserRegisterState extends State<UserRegister> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
+                    controller: _nicController,
+                    decoration: InputDecoration(
+                      labelText: 'NIC',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -148,22 +161,22 @@ class _UserRegisterState extends State<UserRegister> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 60.0, vertical: 15.0),
                     ),
-                    // onPressed: () async {
-                    //   if (_formKey.currentState?.validate() ?? false) {
-                    //     bool success = await _registerUser();
-                    //     if (success) {
-                    //       Navigator.of(context).push(MaterialPageRoute(
-                    //       builder: (context) => VehicleRegistrationForm()
-                    //       ));
-                    //     }
-                    //   }
-                    // },
-                    onPressed: () {
-                          // Navigate to UserPage
+                   
+                    onPressed: () async {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        bool success = await _registerUser();
+                        if (success) {
+                          // Assuming the userId is available after registration; adjust accordingly
+                          String userId = _nicController
+                              .text; // Example: using email as userId
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => VehicleRegistrationForm(),
+                            builder: (context) => VehicleRegistrationForm(
+                                userId: userId), // Pass the userId
                           ));
-                        },
+                        }
+                      }
+                    },
+
                     child: Text('Next'),
                   ),
                 ],
