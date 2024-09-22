@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'search_Map.dart';
+import 'premium_user_dashboard.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final storage = FlutterSecureStorage();
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://192.168.133.249:3000/api/login');
+    final url = Uri.parse('http://localhost:3000/api/login');
 
     try {
       final response = await http.post(
@@ -45,7 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
         return true;
       } else {
         print('Failed to log in: ${response.body}');
-       
+
         return false;
       }
     } catch (e) {
@@ -70,17 +70,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 width: 350,
               ),
               SizedBox(height: 0),
-
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
-                    )
-                  ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25),
+                      )),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -112,9 +110,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             borderSide: BorderSide(
                               color: Color.fromARGB(255, 20, 20, 83),
                               width: 1.0,
-                              ),
+                            ),
                           ),
-                          
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -142,7 +139,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             borderSide: BorderSide(
                               color: Color.fromARGB(255, 20, 20, 83),
                               width: 1.0,
-                              ),
+                            ),
                           ),
                         ),
                         obscureText: true,
@@ -170,12 +167,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             'I agree to the',
                             style: TextStyle(
                               color: const Color.fromARGB(255, 20, 20, 83),
-                              ),
+                            ),
                           ),
                           const Text(
                             ' terms and conditions',
                             style: TextStyle(
-                              color: const Color.fromARGB(255, 20, 20, 83), 
+                              color: const Color.fromARGB(255, 20, 20, 83),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -185,34 +182,35 @@ class _SignInScreenState extends State<SignInScreen> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(146, 255, 255, 255),
-                          foregroundColor: Color.fromARGB(148,144,195,255),
+                          foregroundColor: Color.fromARGB(148, 144, 195, 255),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 140, vertical: 20),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 140, vertical: 20),
                         ),
                         onPressed: () async {
-                          
-                            if (_termsAccepted) {
-                              bool success = await _loginUser();
-                              if (success) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ParkingLocationScreen(),
-                                ));
-                              } else {
-                                print('Login failed');
-                              }
+                          if (_termsAccepted) {
+                            bool success = await _loginUser();
+                            if (success) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => HomeScreen(
+                                    userId: _usernameController
+                                        .text), // Pass email as userId
+                              ));
                             } else {
-                              print('Please accept the terms and conditions');
+                              print('Login failed');
                             }
-                          
+                          } else {
+                            print('Please accept the terms and conditions');
+                          }
                         },
                         child: Text(
                           'Sign In',
                           style: TextStyle(
                             fontSize: 18,
-                            color: const Color.fromARGB(255, 20, 20, 83), 
-                            ),
+                            color: const Color.fromARGB(255, 20, 20, 83),
+                          ),
                         ),
                       ),
                     ],
