@@ -28,7 +28,7 @@ class _UserRegisterState extends State<UserRegister> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'fristName': _firstNameController.text,
+          'firstName': _firstNameController.text,
           'lastName': _lastNameController.text,
           'userName': _userNameController.text,
           'email': _emailController.text,
@@ -80,7 +80,7 @@ class _UserRegisterState extends State<UserRegister> {
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
-                      labelText: 'Fristname',
+                      labelText: 'Firstname',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),

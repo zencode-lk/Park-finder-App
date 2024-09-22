@@ -129,11 +129,6 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                           controller: _carNumberController,
                           label: 'Car Number',
                         ),
-                        SizedBox(height: 16),
-                        _buildTextFormField(
-                          controller: _nicController,
-                          label: 'NIC Number',
-                        ),
                         SizedBox(height: 24),
                         // Show progress bar while submitting
                         if (_isSubmitting)
