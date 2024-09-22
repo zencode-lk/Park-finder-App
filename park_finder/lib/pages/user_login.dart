@@ -21,7 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final storage = FlutterSecureStorage();
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://localhost:3000/api/login');
+    final url = Uri.parse('http://localhost:3000/api/users/login');
 
     try {
       final response = await http.post(
@@ -115,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your username';
+                            return 'Please enter your email';
                           }
                           return null;
                         },
