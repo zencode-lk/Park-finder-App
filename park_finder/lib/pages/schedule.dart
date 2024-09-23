@@ -5,9 +5,6 @@ void main() {
 }
 
 class PaymentScheduleApp extends StatelessWidget {
-  
-
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +30,7 @@ class PaymentScheduleScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 10), // Add spacing from the top
+            SizedBox(height: 10),
             // Search bar
             TextField(
               decoration: InputDecoration(
@@ -95,7 +92,7 @@ class PaymentScheduleScreen extends StatelessWidget {
             // Pay button
             ElevatedButton(
               onPressed: () {
-                // Add your payment action here
+                _simulatePayment(context);
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15),
@@ -115,6 +112,62 @@ class PaymentScheduleScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  // Simulate a payment process
+  void _simulatePayment(BuildContext context) async {
+    // Simulate some payment processing delay (for example, 2 seconds)
+    await Future.delayed(Duration(seconds: 2));
+
+    // After payment process is complete, show success dialog
+    _showSuccessDialog(context);
+  }
+
+  // Show the success dialog after payment is completed
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Deposit transaction completed successfully.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Text(
+                  'Dashboard',
+                  style: TextStyle(
+                    color: Color.fromRGBO(20, 20, 83, 1),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
