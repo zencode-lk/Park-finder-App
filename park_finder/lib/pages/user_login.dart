@@ -195,7 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             if (success) {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => HomeScreen(
-                                    userId: _usernameController.text), // Pass email as userId
+                                    userNic: _usernameController.text), // Pass email as userI
                               ));
                             } else {
                               print('Login failed');

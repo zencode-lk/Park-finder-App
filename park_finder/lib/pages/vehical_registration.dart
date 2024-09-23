@@ -6,9 +6,9 @@ import 'dart:async'; // For Future and delay
 import 'user_login.dart'; // Import the user login page
 
 class VehicleRegistrationForm extends StatefulWidget {
-  final String userId;
+  final String nic;
 
-  VehicleRegistrationForm({required this.userId});
+  VehicleRegistrationForm({required this.nic});
 
   @override
   _VehicleRegistrationFormState createState() =>
@@ -17,7 +17,7 @@ class VehicleRegistrationForm extends StatefulWidget {
 
 class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _formKey = GlobalKey<FormState>();
-  
+ 
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
@@ -26,6 +26,7 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   double _progressValue = 0.0;
 
   Future<void> _registerVehicle() async {
+     print(widget.nic);
     final url = Uri.parse('http://localhost:3000/api/vehicles/register');
     final response = await http.post(
       url,
@@ -33,7 +34,7 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
         'make': _carMakeController.text,
         'model': _carModelController.text,
         'plateNumber': _carNumberController.text,
-        'userId': widget.userId,
+        'nic': widget.nic,
       }),
       headers: {'Content-Type': 'application/json'},
     );

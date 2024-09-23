@@ -165,6 +165,7 @@ class _UserRegisterState extends State<UserRegister> {
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         bool success = await _registerUser();
+
                         if (success) { 
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SignInScreen(), // Pass the userId

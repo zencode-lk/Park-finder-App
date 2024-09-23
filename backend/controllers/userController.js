@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Vehicle = require('../models/Vehicle');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -41,12 +42,15 @@ exports.getUsers = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-exports.getUserWithVehicles = async (req, res) => {
+exports.getUserVehicles = async (req, res) => {
+    const { nic } = req.params;
     try {
-      const userId = req.params.userId;
-      const userWithVehicles = await User.findById(userId).populate('vehicles').exec();
-      res.status(200).json(userWithVehicles);
+      const user = await User.findOne({ nic }).populate('vehicles');
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(user.vehicles); // Send vehicles
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      res.status(500).json({ message: error.message });
     }
   };
