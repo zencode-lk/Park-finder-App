@@ -51,7 +51,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '**Park Finder**',
+              '***Park Finder***',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
