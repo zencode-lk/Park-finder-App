@@ -58,6 +58,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -76,7 +77,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50), // Add space at the top
+                  SizedBox(height: 20), // Add space at the top
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
