@@ -3,8 +3,8 @@ import 'vehical_registration.dart' as vehicalRegistration;
 import 'vehical_registration.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String userId;
-  HomeScreen({required this.userId});
+  final String userNic;
+  HomeScreen({required this.userNic});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => VehicleRegistrationForm(userId: userId),
+              builder: (context) => VehicleRegistrationForm(nic: userNic),
                 ));
               },
               style: ElevatedButton.styleFrom(

@@ -166,12 +166,17 @@ class _UserRegisterState extends State<UserRegister> {
                       if (_formKey.currentState?.validate() ?? false) {
                         bool success = await _registerUser();
                         if (success) {
+
                           // Assuming the userId is available after registration; adjust accordingly
                           String userId = _nicController
+                          
                               .text; // Example: using email as userId
+                               print(userId);
                           Navigator.of(context).push(MaterialPageRoute(
+                           
                             builder: (context) => VehicleRegistrationForm(
-                                userId: userId), // Pass the userId
+                                
+                                nic: userId), // Pass the userId
                           ));
                         }
                       }
