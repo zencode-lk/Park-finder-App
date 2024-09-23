@@ -91,7 +91,7 @@ class UserLandOwner extends StatelessWidget {
                         onPressed: () {
                           // Navigate to LandOwnerPage
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LandRegistrationApp(), // Pass the userId
+                            builder: (context) => LandRegistrationPage(), // Pass the userId
                           ));
                         },
                         style: ElevatedButton.styleFrom(
