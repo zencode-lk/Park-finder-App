@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/land_registration.dart';
 import 'package:park_finder/pages/search_Map.dart';
 import 'package:park_finder/pages/user_register.dart';
 
@@ -89,10 +90,9 @@ class UserLandOwner extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           // Navigate to LandOwnerPage
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LandOwnerPage()),
-                          );
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LandRegistrationApp(), // Pass the userId
+                          ));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 20, 20, 83),
@@ -120,25 +120,6 @@ class UserLandOwner extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-// Placeholder pages for navigation
-class UserPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("User Page")),
-    );
-  }
-}
-
-class LandOwnerPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Land Owner Page")),
     );
   }
 }
