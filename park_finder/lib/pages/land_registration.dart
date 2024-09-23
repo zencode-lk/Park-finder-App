@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:park_finder/main.dart';
 import 'package:park_finder/pages/land_owner_registration.dart';
 
-void main() => runApp(MyApp());
-
 // class LandRegistrationApp extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -107,6 +105,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
               SizedBox(height: 50),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  minimumSize: Size(300, 50),
                   backgroundColor: Color(0xFF0C0C5D), // Button color
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
