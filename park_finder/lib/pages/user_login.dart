@@ -58,6 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
       backgroundColor: Color.fromARGB(255, 20, 20, 83),
       body: Stack(

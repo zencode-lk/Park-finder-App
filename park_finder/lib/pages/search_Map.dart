@@ -139,8 +139,7 @@ List<dynamic> _places = [];
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Click here to join as a premium user today,Shedule",
-                  
+                  "Click here to join as a premium user today",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18, 
@@ -151,7 +150,6 @@ List<dynamic> _places = [];
                 SizedBox(height: 20),
                 Text(
                   "Shedule",
-                  
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18, 
@@ -173,6 +171,7 @@ List<dynamic> _places = [];
                       color: Color.fromRGBO(20, 20, 83, 1),
                     ),
                   ),
+                  
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Background color
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
@@ -198,129 +197,128 @@ List<dynamic> _places = [];
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-    ),
-    body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          textAlign: TextAlign.center,
-          'Your Nearest Parking Location...',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,         
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            textAlign: TextAlign.center,
+            'Your Nearest Parking Location...',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,         
+            ),
           ),
-        ),
-        Text(
-          textAlign: TextAlign.center,
-          'Please select a parking loacation for navigation',
-          style: TextStyle(
-            fontSize: 19,         
+          Text(
+            textAlign: TextAlign.center,
+            'Please select a parking loacation for navigation',
+            style: TextStyle(
+              fontSize: 19,         
+            ),
           ),
-        ),
-        SizedBox(height: 20),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 20, 20, 83),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25)
-            )
-          ),
-          height: 300,
-          width: 375,
-          
-          child: Stack(
-            children: [
-              GoogleMap(
-
-                onMapCreated: (controller) {
-                  mapController = controller;
-                  if (_currentLocation != null) {
-                    mapController!.animateCamera(
-                      CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
-                    );
-                  }
-                },
-                initialCameraPosition: CameraPosition(
-                  target: _currentLocation,
-                  zoom: 16.0,
-                ),
-                markers: _markers,
-              ),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (mapController != null) {
+          SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 20, 20, 83),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25)
+              )
+            ),
+            height: 300,
+            width: 375,
+            
+            child: Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: (controller) {
+                    mapController = controller;
+                    if (_currentLocation != null) {
                       mapController!.animateCamera(
                         CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
                       );
                     }
                   },
-                  child: Text(
-                    'Re-centre',
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 23, 117, 239), 
+                  initialCameraPosition: CameraPosition(
+                    target: _currentLocation,
+                    zoom: 16.0,
+                  ),
+                  markers: _markers,
+                ),
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (mapController != null) {
+                        mapController!.animateCamera(
+                          CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Re-centre',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 23, 117, 239), 
+                      ),
                     ),
                   ),
                 ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _places.length,
+              itemBuilder: (context, index) {
+                final place = _places[index];
+                return ListTile(
+                  leading: Icon(Icons.location_pin),
+                  title: Text(place['name'] ?? 'No Name'), // Display place name
+                  subtitle: Text(place['vicinity']??'No Address'), // Display address
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Nearest'),
+                      Text('50m'), // Placeholder text
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          Spacer(),
+          // Bottom navigation bar
+          BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.schedule),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: '',
               ),
             ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _places.length,
-            itemBuilder: (context, index) {
-              final place = _places[index];
-              return ListTile(
-                leading: Icon(Icons.location_pin),
-                title: Text(place['name'] ?? 'No Name'), // Display place name
-                subtitle: Text(place['vicinity']??'No Address'), // Display address
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Nearest'),
-                    Text('50m'), // Placeholder text
-                  ],
-                ),
-              );
+            onTap: (index) {
+              if (index == 0) {
+                  _showPremiumPopup(); // Show pop-up when the schedule button is pressed
+              }
+              if (index == 1) {
+                  _showPremiumPopup(); // Show pop-up when the schedule button is pressed
+              }
             },
           ),
-        ),
-        Spacer(),
-        // Bottom navigation bar
-        BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_parking),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: '',
-            ),
-          ],
-          onTap: (index) {
-            if (index == 0) {
-                _showPremiumPopup(); // Show pop-up when the schedule button is pressed
-            }
-          },
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
-}
+            

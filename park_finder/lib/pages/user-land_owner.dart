@@ -8,6 +8,7 @@ class UserLandOwner extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
       backgroundColor: Color(0xFF141453), // Background color
       body: SafeArea(
@@ -70,7 +71,7 @@ class UserLandOwner extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Become a user',
+                            'Join user',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
@@ -103,7 +104,7 @@ class UserLandOwner extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Become a land owner',
+                            'Join land owner',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
