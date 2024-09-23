@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:park_finder/pages/terms_and_conditions.dart';
 
 import 'premium_user_dashboard.dart';
+import 'terms_and_conditions.dart';  // Assuming you have a separate TermsAndConditionsPage
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -155,26 +154,26 @@ class _SignInScreenState extends State<SignInScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Checkbox(
-                            value: _termsAccepted,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _termsAccepted = value!;
-                              });
-                            },
-                            activeColor: const Color.fromARGB(255, 0, 0, 0),
-                          ),
                           Text(
                             'I agree to the',
                             style: TextStyle(
                               color: const Color.fromARGB(255, 20, 20, 83),
                             ),
                           ),
-                          const Text(
-                            ' terms and conditions',
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 20, 20, 83),
-                              fontWeight: FontWeight.bold,
+                          TextButton(
+                            onPressed: () {
+                              // Navigate to the Terms and Conditions page
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => TermsAndConditionsPage(navigateToLandOwnerPage: false,),
+                              ));
+                            },
+                            child: const Text(
+                              'terms and conditions',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 20, 20, 83),
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ],
@@ -191,21 +190,17 @@ class _SignInScreenState extends State<SignInScreen> {
                               horizontal: 140, vertical: 20),
                         ),
                         onPressed: () async {
-                          if (_termsAccepted) {
+                        
                             bool success = await _loginUser();
                             if (success) {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => HomeScreen(
-                                    userId: _usernameController
-                                        .text), // Pass email as userId
+                                    userId: _usernameController.text), // Pass email as userId
                               ));
                             } else {
                               print('Login failed');
                             }
-                          } else {
-                            print('Please accept the terms and conditions');
-                          }
-                        },
+                          }, 
                         child: Text(
                           'Sign In',
                           style: TextStyle(

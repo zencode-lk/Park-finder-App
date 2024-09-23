@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/land_owner_registration.dart';
 
 void main() => runApp(LandRegistrationApp());
 
@@ -81,7 +82,9 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => LandOwnerRegister(), // Pass the userId
+                              ));
                             },
                             child: Text('OK'),
                           ),
@@ -90,7 +93,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                     );
                   }
                 },
-                child: Text('Register'),
+                child: Text('Next'),
               ),
             ],
           ),
