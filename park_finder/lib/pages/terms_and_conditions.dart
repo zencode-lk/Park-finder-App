@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/user-land_owner.dart';
 
 // Entry point of the application
 void main() {
@@ -192,6 +193,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Terms and Conditions Accepted')),
                       );
+                      Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => UserLandOwner(), // Pass the userId
+                          ));
                     }
                   : null, // Disable button if checkbox is not checked
               child: Text('Continue'), // Changed text to "Continue"

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:park_finder/pages/terms_and_conditions.dart';
 import 'package:park_finder/pages/user-land_owner.dart';
 import 'package:park_finder/pages/user_login.dart';
 import 'package:park_finder/pages/user_register.dart';
@@ -121,7 +122,7 @@ class GetStartedScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserLandOwner(),
+                    builder: (context) => TermsAndConditionsPage(),
                   ));
                 },
                 style: ElevatedButton.styleFrom(
