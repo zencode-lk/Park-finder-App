@@ -122,9 +122,7 @@ class GetStartedScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => TermsAndConditionsPage(
-                      
-                    ),
+                    builder: (context) => TermsAndConditionsPage(navigateToLandOwnerPage: true,),
                   ));
                 },
                 style: ElevatedButton.styleFrom(

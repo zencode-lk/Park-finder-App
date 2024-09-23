@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/premium_user_dashboard.dart';
 import 'package:park_finder/pages/user-land_owner.dart';
+import 'package:park_finder/pages/user_login.dart';
 
 // Entry point of the application
 void main() {
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TermsAndConditionsPage(), // Set TermsAndConditionsPage as the home
+      home: TermsAndConditionsPage(navigateToLandOwnerPage: true), // Set TermsAndConditionsPage as the home
     );
   }
 }
@@ -24,26 +26,24 @@ class MyApp extends StatelessWidget {
 class TermsAndConditionsPage extends StatefulWidget {
   @override
   _TermsAndConditionsPageState createState() => _TermsAndConditionsPageState();
+
+  final bool navigateToLandOwnerPage;
+
+  TermsAndConditionsPage({required this.navigateToLandOwnerPage});
 }
 
 class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
   bool _isChecked = false; // Variable to track if the checkbox is checked
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
         title: Text(
           'Terms and Conditions',
           style: TextStyle(color: Colors.white), // Heading text color set to white
-        ),
-        backgroundColor: Color.fromARGB(255, 5, 5, 5),
-
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black), // Black back button
-          onPressed: () {
-            Navigator.of(context).pop(); // Action for back button
-          },
         ),
       ),
       body: SingleChildScrollView(
@@ -193,14 +193,23 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Terms and Conditions Accepted')),
                       );
-                      Navigator.of(context).push(MaterialPageRoute(
+                      if (widget.navigateToLandOwnerPage){
+                        Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => UserLandOwner(), // Pass the userId
                           ));
+                      }
+                      else{
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SignInScreen(), // Pass the userId
+                          ));
+                      }
                     }
                   : null, // Disable button if checkbox is not checked
+              
               child: Text('Continue'), // Changed text to "Continue"
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent, // Correct background color usage
+                backgroundColor: Color.fromARGB(255, 20, 20, 83), // Correct background color usage
+                foregroundColor: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
           ],
