@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:park_finder/main.dart';
 import 'dart:convert';
 import 'dart:async'; // For Future and delay
 
@@ -27,7 +26,6 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   double _progressValue = 0.0;
 
   Future<void> _registerVehicle() async {
-     print(widget.userId);
     final url = Uri.parse('http://172.20.10.3:3000/api/vehicles/register');
     final response = await http.post(
       url,
@@ -77,7 +75,16 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   }) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0), // Rounded corners
+          borderSide: BorderSide.none, // Remove the border
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20), // Padding inside
+      ),
       validator: (value) => value!.isEmpty ? 'Enter $label' : null,
     );
   }
@@ -119,17 +126,17 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                       children: <Widget>[
                         _buildTextFormField(
                           controller: _carMakeController,
-                          label: 'Car Make',
+                          label: 'Your car make',
                         ),
                         SizedBox(height: 16),
                         _buildTextFormField(
                           controller: _carModelController,
-                          label: 'Car Model',
+                          label: 'Your car model',
                         ),
                         SizedBox(height: 16),
                         _buildTextFormField(
                           controller: _carNumberController,
-                          label: 'Car Number',
+                          label: 'Your car number',
                         ),
                         SizedBox(height: 24),
                         // Show progress bar while submitting
@@ -149,23 +156,23 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
                           onPressed: _isSubmitting
                               ? null // Disable button while submitting
                               : () async {
-                                  if (_formKey.currentState?.validate() ??
-                                      false) {
+                                  if (_formKey.currentState?.validate() ?? false) {
                                     await _simulateLoading();
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(30.0), // Rounded corners
                             ),
                             padding: EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 30.0),
+                              vertical: 20.0, 
+                              horizontal: 100.0, // Adjust the width
+                            ),
                             backgroundColor: Colors.deepPurple,
                             elevation: 6,
-                            textStyle: TextStyle(fontSize: 18),
                           ),
                           child: Text(
-                            _isSubmitting ? 'Registering...' : 'Register',
+                            _isSubmitting ? 'Registering...' : 'Register!',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
