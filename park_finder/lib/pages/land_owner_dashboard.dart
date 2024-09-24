@@ -1,23 +1,9 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(LandOwnerDashboardApp());
-}
-
-class LandOwnerDashboardApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Land Owner Dashboard',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: LandOwnerDashboardScreen(),
-    );
-  }
-}
 
 class LandOwnerDashboardScreen extends StatelessWidget {
+  final String userId;
+  LandOwnerDashboardScreen({required this.userId});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
