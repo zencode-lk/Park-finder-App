@@ -7,7 +7,9 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   nic: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  vehicles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle' }] // Reference to Vehicle model
+  vehicles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle' }], // Reference to Vehicle model
+  userType: { type: String, enum: ['normal', 'landowner'], default: 'normal'},
+  lands: [{type: mongoose.Schema.Types.ObjectId, ref: 'Land'}]
 });
 
 module.exports = mongoose.model('User', UserSchema, 'users');

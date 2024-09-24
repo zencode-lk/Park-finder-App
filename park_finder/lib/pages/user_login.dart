@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'premium_user_dashboard.dart'; // Assuming you have a PremiumUserDashboardPage
+import 'land_owner_dashboard.dart'; // Assuming you have a LandOwnerDashboardPage
+
 import 'package:park_finder/pages/terms_and_conditions.dart';
 
 import 'premium_user_dashboard.dart';
 import 'terms_and_conditions.dart'; 
+
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -16,11 +21,17 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _termsAccepted = false;
   final storage = FlutterSecureStorage();
+  
+  // Loading state
+  bool _isLoading = false;
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://localhost:3000/api/users/login');
+    final url = Uri.parse('http://172.20.10.3:3000/api/users/login');
+
+    setState(() {
+      _isLoading = true; // Start loading
+    });
 
     try {
       final response = await http.post(
@@ -35,17 +46,39 @@ class _SignInScreenState extends State<SignInScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
-        print('Login successful, token: $token');
-
+        final userType = data['userType'];  // Get userType from the response
+        final userId = data['id'];
+        print('Login successful, token: $token, userType: $userType, id: $userId');
+        
+        // Store the token securely
         await storage.write(key: 'auth_token', value: token);
 
+        // Navigate based on the userType
+       
+        if (userType == 'landowner') {
+          print(userType);
+          print(userId);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LandOwnerDashboardScreen(userId: userId),  // Navigate to landowner dashboard
+          ));
+        } else {
+          print(userType);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HomeScreen(userId: userId),  // Navigate to normal user dashboard
+          ));
+        }
         return true;
       } else {
         print('Failed to log in: ${response.body}');
         return false;
       }
     } catch (e) {
+      print('Login error: $e');
       return false;
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
     }
   }
 
@@ -78,6 +111,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   topRight: Radius.circular(25),
                 ),
               ),
+
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -208,15 +242,34 @@ class _SignInScreenState extends State<SignInScreen> {
                           fontSize: 18,
                           color: const Color.fromARGB(255, 20, 20, 83),
                         ),
+                        onPressed: _isLoading
+                            ? null // Disable button if loading
+                            : () async {
+                                bool success = await _loginUser();
+                                if (!success) {
+                                  print('Login failed');
+                                }
+                              },
+                        child: _isLoading
+                            ? CircularProgressIndicator() // Show loading spinner
+                            : Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: const Color.fromARGB(255, 20, 20, 83),
+                                ),
+                              ),
                       ),
                     ),
                   SizedBox(height: 50), // Add some space at the bottom
                   ],
                 ),
               ),
+
             ),
           ],
         ),
+
       ),
     );
   }
