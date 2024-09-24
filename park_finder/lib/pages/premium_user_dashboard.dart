@@ -1,128 +1,113 @@
 import 'package:flutter/material.dart';
-import 'vehical_registration.dart' as vehicalRegistration;
-import 'vehical_registration.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Park Finder',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(userId: ' 66f1ed7262fe2e0ee16084cc'),
-    );
-  }
-}
+import 'package:park_finder/pages/schedule.dart';
+import 'package:park_finder/pages/search_Map.dart';
+import 'vehical_registration.dart'; // Assuming this is the correct import for your vehicle registration page
 
 class HomeScreen extends StatelessWidget {
   final String userId;
   HomeScreen({required this.userId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Parking App'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                'Rs.5700.00',
-                style: TextStyle(fontSize: 18),
+      backgroundColor: Color(0xFFE0D4F1), // Light purple background color
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+
+              // Main buttons
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: buildMainButton(
+                          context, 'Find Parking', 'images/map.jpg', () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ParkingLocationScreen(
+                            ),
+                          ));
+                      }),
+                    ),
+                    SizedBox(height: 16),
+                    Expanded(
+                      child: buildMainButton(
+                          context, 'Schedule', 'images/schedule.jpg', () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PaymentScheduleScreen(),
+                          ));
+                      }),
+                    ),
+                    SizedBox(height: 16),
+                    Expanded(
+                      child: buildMainButton(
+                          context, 'Reviews', 'images/reviews.jpg', () {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Reviews button pressed'),
+                          ));
+                      }),
+                    ),
+                    SizedBox(height: 16),
+                    Expanded(
+                      child: buildMainButton(
+                          context, 'Add a vehicle', 'images/reviews.jpg', () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => VehicleRegistrationForm(
+                            userId: userId,
+                          ),
+                        ));
+                      }),
+                    ),
+                  ],
+                ),
               ),
-            ),
+
+              // Bottom section
+              Column(
+                children: [
+                  SizedBox(height: 16),
+                  IconButton(
+                    icon: Icon(Icons.refresh, size: 28),
+                    onPressed: () {
+                      // Add refresh functionality here
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildButton(context, 'Schedule', Icons.schedule),
-                buildButton(context, 'Find Parking', Icons.local_parking),
-                buildButton(context, 'Reviews', Icons.rate_review),
-              ],
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Recent Activity',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 8),
-            buildActivity('Payment Successful - rs. 5700.00'),
-            buildActivity('Parking Scheduled - Silva\'s Car Park'),
-            buildActivity('Parking Deducted - rs. 500.00'),
-            SizedBox(height: 16),
-            Spacer(), // To push the button to the bottom of the screen
-            ElevatedButton(
-              onPressed: () {
-               Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => VehicleRegistrationForm(userId: '66f1ed7262fe2e0ee16084cc'),
-                ));
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-              ),
-              child: Text(
-                'Register Vehicle',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            SizedBox(height: 16),
-          ],
         ),
       ),
     );
   }
 
-  Widget buildButton(BuildContext context, String title, IconData icon) {
-    return ElevatedButton(
-      onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$title button pressed')),
-        );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 30),
-          SizedBox(height: 5),
-          Text(
+  Widget buildMainButton(BuildContext context, String title, String imagePath,
+      VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Text(
             title,
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildActivity(String activity) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Icon(Icons.check_circle, color: Colors.green),
-          SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              activity,
-              style: TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-        ],
+        ),
       ),
     );
   }
