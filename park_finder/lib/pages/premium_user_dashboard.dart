@@ -4,8 +4,8 @@ import 'package:park_finder/pages/search_Map.dart';
 import 'vehical_registration.dart'; // Assuming this is the correct import for your vehicle registration page
 
 class HomeScreen extends StatelessWidget {
-  final String userNic;
-  HomeScreen({required this.userNic});
+  final String userId;
+  HomeScreen({required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                           context, 'Add a vehicle', 'images/reviews.jpg', () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VehicleRegistrationForm(
-                            nic: userNic,
+                            nic: userId,
                           ),
                         ));
                       }),
