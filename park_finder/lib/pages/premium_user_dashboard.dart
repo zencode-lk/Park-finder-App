@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:park_finder/pages/review.dart';
 import 'package:park_finder/pages/schedule.dart';
 import 'package:park_finder/pages/search_Map.dart';
+import 'package:park_finder/pages/user_profile.dart';
 import 'vehical_registration.dart'; // Assuming this is the correct import for your vehicle registration page
 
 class HomeScreen extends StatelessWidget {
   final String userId;
+
+  // Example user details (replace with actual data from your app logic)
+  final String userName = "Manindu Lakmith";
+  final String userEmail = "manindulakmith@gmail.com";
+  final List<String> userVehicles = ['Lamborghini Aventador', 'Mitsubishi Evolution 6'];
+
   HomeScreen({required this.userId});
 
   @override
@@ -94,10 +101,14 @@ class HomeScreen extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.person, size: 28, color: Colors.white),
                   onPressed: () {
-                    // Add user profile functionality here
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('User icon pressed'),
-                    ));
+                    // Navigate to user profile page
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => UserProfilePage(
+                        name: userName,
+                        email: userEmail,
+                        vehicles: userVehicles,
+                      ),
+                    )); // Corrected this part
                   },
                 ),
               ),
@@ -109,10 +120,66 @@ class HomeScreen extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.support_agent, size: 28, color: Colors.white),
                   onPressed: () {
-                    // Add customer service functionality here
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Customer Service button pressed'),
-                    ));
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Customer Support'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Hello! We are here to assist you with any questions or issues you may have.',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'You can reach us at:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                'Phone: 0772932907',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 5),
+                              GestureDetector(
+                                child: Text(
+                                  'Email: hello@zencode.com',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueAccent,
+                                  ),
+                                ),
+                                onTap: () {
+                                  // Add email functionality
+                                  // For example: launchUrl(Uri(scheme: 'mailto', path: 'support@zencode.com'));
+                                },
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Our support team is available from 9 AM to 5 PM, Monday to Friday.',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'We are committed to providing you with the best experience. Don’t hesitate to reach out!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: Text('Close'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
               ),
