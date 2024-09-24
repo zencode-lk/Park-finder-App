@@ -3,14 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'premium_user_dashboard.dart'; // Assuming you have a PremiumUserDashboardPage
+import 'premium_user_dashboard.dart'; // Assuming HomeScreen exists
 import 'land_owner_dashboard.dart'; // Assuming you have a LandOwnerDashboardPage
-
-import 'package:park_finder/pages/terms_and_conditions.dart';
-
-import 'premium_user_dashboard.dart';
-import 'terms_and_conditions.dart'; 
-
+import 'terms_and_conditions.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -22,7 +17,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final storage = FlutterSecureStorage();
-  
+
   // Loading state
   bool _isLoading = false;
 
@@ -49,22 +44,18 @@ class _SignInScreenState extends State<SignInScreen> {
         final userType = data['userType'];  // Get userType from the response
         final userId = data['id'];
         print('Login successful, token: $token, userType: $userType, id: $userId');
-        
+
         // Store the token securely
         await storage.write(key: 'auth_token', value: token);
 
         // Navigate based on the userType
-       
         if (userType == 'landowner') {
-          print(userType);
-          print(userId);
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => LandOwnerDashboardScreen(userId: userId),  // Navigate to landowner dashboard
+            builder: (context) => LandOwnerDashboardScreen(userId: userId), // Navigate to landowner dashboard
           ));
         } else {
-          print(userType);
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => HomeScreen(userId: userId),  // Navigate to normal user dashboard
+            builder: (context) => HomeScreen(userId: userId), // Navigate to normal user dashboard
           ));
         }
         return true;
@@ -97,13 +88,13 @@ class _SignInScreenState extends State<SignInScreen> {
           children: <Widget>[
             Image.asset(
               'images/logio.png',
-              height: size.height * 0.35,  // Responsive height
-              width: size.width * 0.7,     // Responsive width
+              height: size.height * 0.35, // Responsive height
+              width: size.width * 0.7, // Responsive width
             ),
             SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              height: size.height * 0.65,  // Adjust height
+              height: size.height * 0.65, // Adjust height
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -111,7 +102,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   topRight: Radius.circular(25),
                 ),
               ),
-
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -225,6 +215,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.width * 0.3, vertical: 20),
                       ),
+
                       onPressed: () async {
                         bool success = await _loginUser();
                         if (success) {
@@ -245,15 +236,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         
                       ),
                     ),
-                  SizedBox(height: 50), // Add some space at the bottom
+                    SizedBox(height: 50), // Add some space at the bottom
                   ],
                 ),
               ),
-
             ),
           ],
         ),
-
       ),
     );
   }
