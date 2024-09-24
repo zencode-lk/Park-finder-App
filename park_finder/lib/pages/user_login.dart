@@ -27,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _isLoading = false;
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://172.20.10.3:3000/api/users/login');
+    final url = Uri.parse('http://localhost:3000/api/users/login');
 
     setState(() {
       _isLoading = true; // Start loading
@@ -242,23 +242,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           fontSize: 18,
                           color: const Color.fromARGB(255, 20, 20, 83),
                         ),
-                        onPressed: _isLoading
-                            ? null // Disable button if loading
-                            : () async {
-                                bool success = await _loginUser();
-                                if (!success) {
-                                  print('Login failed');
-                                }
-                              },
-                        child: _isLoading
-                            ? CircularProgressIndicator() // Show loading spinner
-                            : Text(
-                                'Sign In',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: const Color.fromARGB(255, 20, 20, 83),
-                                ),
-                              ),
+                        
                       ),
                     ),
                   SizedBox(height: 50), // Add some space at the bottom

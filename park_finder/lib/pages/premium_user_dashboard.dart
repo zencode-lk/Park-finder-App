@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                           context, 'Add a vehicle', 'images/reviews.jpg', () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VehicleRegistrationForm(
-                            nic: userId,
+                            userId: userId,
                           ),
                         ));
                       }),
