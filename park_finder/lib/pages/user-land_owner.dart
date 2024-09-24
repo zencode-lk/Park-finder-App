@@ -6,6 +6,10 @@ import 'package:park_finder/pages/user_register.dart';
 class UserLandOwner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
@@ -13,59 +17,52 @@ class UserLandOwner extends StatelessWidget {
       ),
       backgroundColor: Color(0xFF141453), // Background color
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
+        child: SingleChildScrollView( // Make the body scrollable
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
                 'images/logio.png',
-                height: 350,
-                width: 350,
-            ),// Top section (car image or any placeholder)
-            
-            Expanded(
-              child: Container(
+                height: 350, // Responsive height
+                width: 350, // Responsive width
+              ),
+              Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25),
-                  )
+                  ),
                 ),
-              
-            
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 20),
-                    // Greeting text
+                    SizedBox(height: screenHeight * 0.02), // Responsive spacing
                     Text(
                       'hello!',
                       style: TextStyle(
                         color: Color.fromARGB(255, 20, 20, 83),
-                        fontSize: 36,
+                        fontSize: screenWidth * 0.09, // Responsive font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
-                    SizedBox(height: 30),
+                    SizedBox(height: screenHeight * 0.05), // Responsive spacing
 
                     // Button 1: Become a user
                     Padding(
-                      
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to UserPage
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ParkingLocationScreen(),
                           ));
                         },
                         style: ElevatedButton.styleFrom(
-                          
+                          minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1), // Responsive size
                           backgroundColor: Color.fromARGB(255, 20, 20, 83),
-                          foregroundColor: Color.fromARGB(148,144,195,255), // Button background color
-                          padding: EdgeInsets.symmetric(vertical: 20),
+                          foregroundColor: Color.fromARGB(148, 144, 195, 255),
+                          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -74,7 +71,7 @@ class UserLandOwner extends StatelessWidget {
                           child: Text(
                             'Join user',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: screenWidth * 0.05, // Responsive font size
                               color: Colors.white,
                             ),
                           ),
@@ -82,22 +79,22 @@ class UserLandOwner extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    SizedBox(height: screenHeight * 0.05), // Responsive spacing
 
                     // Button 2: Become a land owner
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to LandOwnerPage
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LandRegistrationPage(), // Pass the userId
+                            builder: (context) => LandRegistrationPage(),
                           ));
                         },
                         style: ElevatedButton.styleFrom(
+                          minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1), // Responsive size
                           backgroundColor: Color.fromARGB(255, 20, 20, 83),
-                          foregroundColor: Color.fromARGB(148,144,195,255), // Button background color
-                          padding: EdgeInsets.symmetric(vertical: 20),
+                          foregroundColor: Color.fromARGB(148, 144, 195, 255),
+                          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -106,18 +103,19 @@ class UserLandOwner extends StatelessWidget {
                           child: Text(
                             'Join land owner',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: screenWidth * 0.05, // Responsive font size
                               color: Colors.white,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ]
-                )
-              )
-            ),
-          ],
+                    SizedBox(height: screenHeight * 0.15), // Add some padding at the bottom
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

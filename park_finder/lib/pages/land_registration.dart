@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:park_finder/pages/land_owner_registration.dart';
 
+
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class LandRegistrationPage extends StatefulWidget {
   @override
   _LandRegistrationPageState createState() => _LandRegistrationPageState();
@@ -104,6 +106,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
               // Submit Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  minimumSize: Size(300, 50),
                   backgroundColor: Color(0xFF0C0C5D), // Button color
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(

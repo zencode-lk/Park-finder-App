@@ -76,7 +76,7 @@ class _UserRegisterState extends State<UserRegister> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50), // Add space at the top
+                  SizedBox(height: 20), // Add space at the top
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
@@ -153,6 +153,7 @@ class _UserRegisterState extends State<UserRegister> {
                   SizedBox(height: 30),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      minimumSize: Size(350, 50),
                       backgroundColor: Color(0xFF0C0C5D), // Button color
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(

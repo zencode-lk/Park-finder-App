@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:park_finder/pages/vehical_registration.dart';
 import 'dart:convert';
-
 import 'user_login.dart';
 
 class LandOwnerRegister extends StatefulWidget {
@@ -44,23 +42,24 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
           }));
 
       if (response.statusCode == 201) {
-        // Registration successful
 
-        print('Landowner and Land registered: ${response.body}');
+        print('Landowner registered: ${response.body}');
         return true;
       } else {
-        // Handle error
-        print('Failed to register: ${response.body}');
+        print('Failed to register landowner: ${response.body}');
         return false;
       }
-    } catch (error) {
-      print('Error: $error');
+    } catch (e) {
+      print('Error occurred: $e');
       return false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
@@ -68,7 +67,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: screenHeight,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,
@@ -77,13 +76,13 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08), // Responsive padding
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20), // Add space at the top
+                  //SizedBox(height: screenHeight * 0.05), // Responsive spacing
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
@@ -93,7 +92,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: _lastNameController,
                     decoration: InputDecoration(
@@ -103,7 +102,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: _userNameController,
                     decoration: InputDecoration(
@@ -113,7 +112,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -124,7 +123,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: _nicController,
                     decoration: InputDecoration(
@@ -135,7 +134,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     keyboardType: TextInputType.text,
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
@@ -146,7 +145,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: _confirmPasswordController,
                     decoration: InputDecoration(
@@ -157,16 +156,16 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: screenHeight * 0.03),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      minimumSize: Size(screenWidth * 0.9, 50), // Responsive size
                       backgroundColor: Color(0xFF0C0C5D), // Button color
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 60.0, vertical: 15.0),
+                      padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
