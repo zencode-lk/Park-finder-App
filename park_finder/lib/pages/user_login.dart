@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:park_finder/pages/terms_and_conditions.dart';
-
-import 'premium_user_dashboard.dart';
-import 'terms_and_conditions.dart';  // Assuming you have a separate TermsAndConditionsPage
+import 'premium_user_dashboard.dart'; // Assuming you have a PremiumUserDashboardPage
+import 'land_owner_dashboard.dart'; // Assuming you have a LandOwnerDashboardPage
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -16,11 +14,17 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _termsAccepted = false;
   final storage = FlutterSecureStorage();
+  
+  // Loading state
+  bool _isLoading = false;
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://localhost:3000/api/users/login');
+    final url = Uri.parse('http://172.20.10.3:3000/api/users/login');
+
+    setState(() {
+      _isLoading = true; // Start loading
+    });
 
     try {
       final response = await http.post(
@@ -35,20 +39,40 @@ class _SignInScreenState extends State<SignInScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
-        print('Login successful, token: $token');
-
+        final userType = data['userType'];  // Get userType from the response
+        final userId = data['id'];
+        print('Login successful, token: $token, userType: $userType, id: $userId');
+        
         // Store the token securely
         await storage.write(key: 'auth_token', value: token);
 
-        // Navigate to the next screen or perform other actions
+        // Navigate based on the userType
+       
+        if (userType == 'landowner') {
+          print(userType);
+          print(userId);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LandOwnerDashboardScreen(userId: userId),  // Navigate to landowner dashboard
+          ));
+        } else {
+          print(userType);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HomeScreen(userId: userId),  // Navigate to normal user dashboard
+          ));
+        }
+
         return true;
       } else {
         print('Failed to log in: ${response.body}');
-
         return false;
       }
     } catch (e) {
+      print('Login error: $e');
       return false;
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
     }
   }
 
@@ -74,11 +98,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
-                      )),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -150,34 +175,6 @@ class _SignInScreenState extends State<SignInScreen> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'I agree to the',
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 20, 20, 83),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // Navigate to the Terms and Conditions page
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => TermsAndConditionsPage(navigateToLandOwnerPage: false,),
-                              ));
-                            },
-                            child: const Text(
-                              'terms and conditions',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 20, 20, 83),
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       SizedBox(height: 80),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -186,28 +183,25 @@ class _SignInScreenState extends State<SignInScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 140, vertical: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 140, vertical: 20),
                         ),
-                        onPressed: () async {
-                        
-                            bool success = await _loginUser();
-                            if (success) {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => HomeScreen(
-                                    userNic: _usernameController.text), // Pass email as userI
-                              ));
-                            } else {
-                              print('Login failed');
-                            }
-                          }, 
-                        child: Text(
-                          'Sign In',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: const Color.fromARGB(255, 20, 20, 83),
-                          ),
-                        ),
+                        onPressed: _isLoading
+                            ? null // Disable button if loading
+                            : () async {
+                                bool success = await _loginUser();
+                                if (!success) {
+                                  print('Login failed');
+                                }
+                              },
+                        child: _isLoading
+                            ? CircularProgressIndicator() // Show loading spinner
+                            : Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: const Color.fromARGB(255, 20, 20, 83),
+                                ),
+                              ),
                       ),
                     ],
                   ),
@@ -215,6 +209,14 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ],
           ),
+          // Show a loading overlay
+          if (_isLoading)
+            Container(
+              color: Colors.black54, // Semi-transparent overlay
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
         ],
       ),
     );

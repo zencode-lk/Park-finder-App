@@ -6,6 +6,10 @@ import 'dart:convert';
 import 'user_login.dart';
 
 class LandOwnerRegister extends StatefulWidget {
+  final Map<String, dynamic>
+      landData; // Receiving the land data from previous page
+
+  LandOwnerRegister({required this.landData});
   @override
   State<LandOwnerRegister> createState() => _LandOwnerRegisterState();
 }
@@ -21,35 +25,37 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
   final _confirmPasswordController = TextEditingController();
 
   Future<bool> _registerLandOwner() async {
-    final url = Uri.parse('http://localhost:3000/api/landowners/register');
-
+    final url = Uri.parse('http://localhost:3000/api/land/register-owner');
     try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'firstName': _firstNameController.text,
-          'lastName': _lastNameController.text,
-          'userName': _userNameController.text,
-          'email': _emailController.text,
-          'nic': _nicController.text,
-          'password': _passwordController.text,
-          'confirmPassword': _confirmPasswordController.text,
-        }),
-      );
+      final response = await http.post(url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'firstName': _firstNameController.text,
+            'lastName': _lastNameController.text,
+            'userName': _userNameController.text,
+            'email': _emailController.text,
+            'nic': _nicController.text,
+            'password': _passwordController.text,
+            'confirmPassword': _confirmPasswordController.text,
+            'userType': 'landowner',
+
+            // Include land data received from previous page
+            'land': widget.landData,
+          }));
 
       if (response.statusCode == 201) {
-        // Landowner registered successfully
-        print('Landowner registered: ${response.body}');
+        // Registration successful
+
+        print('Landowner and Land registered: ${response.body}');
         return true;
       } else {
         // Handle error
-        print('Failed to register landowner: ${response.body}');
+        print('Failed to register: ${response.body}');
         return false;
       }
-    } catch (e) {
-      print('Error occurred: $e');
-      return false; // Indicate failure
+    } catch (error) {
+      print('Error: $error');
+      return false;
     }
   }
 

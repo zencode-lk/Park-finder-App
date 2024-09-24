@@ -2,11 +2,27 @@ import 'package:flutter/material.dart';
 import 'vehical_registration.dart' as vehicalRegistration;
 import 'vehical_registration.dart';
 
+void main() {
+  runApp(MyApp());
+}
 
+class MyApp extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Park Finder',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomeScreen(userId: ' 66f1ed7262fe2e0ee16084cc'),
+    );
+  }
+}
 
 class HomeScreen extends StatelessWidget {
-  final String userNic;
-  HomeScreen({required this.userNic});
+  final String userId;
+  HomeScreen({required this.userId});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +70,7 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => VehicleRegistrationForm(nic: userNic),
+              builder: (context) => VehicleRegistrationForm(userId: '66f1ed7262fe2e0ee16084cc'),
                 ));
               },
               style: ElevatedButton.styleFrom(
