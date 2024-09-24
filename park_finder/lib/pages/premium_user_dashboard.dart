@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/review.dart';
 import 'package:park_finder/pages/schedule.dart';
 import 'package:park_finder/pages/search_Map.dart';
 import 'vehical_registration.dart'; // Assuming this is the correct import for your vehicle registration page
@@ -58,8 +59,8 @@ class HomeScreen extends StatelessWidget {
                           'Reviews',
                           'images/reviews.jpg',
                           () {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Reviews button pressed'),
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ReviewPage(),
                             ));
                           },
                           320.0, // Fixed width for other buttons
