@@ -1,19 +1,22 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:park_finder/main.dart';
+import 'package:http/http.dart' as http;
 import 'package:park_finder/pages/land_owner_registration.dart';
 
-// class LandRegistrationApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Land Registration',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: LandRegistrationPage(),
-//     );
-//   }
-// }
+
+void main() => runApp(MyApp());
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Land Registration App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LandRegistrationPage(), // Set the home to your LandRegistrationPage
+    );
+  }
+}
 
 class LandRegistrationPage extends StatefulWidget {
   @override
@@ -23,7 +26,7 @@ class LandRegistrationPage extends StatefulWidget {
 class _LandRegistrationPageState extends State<LandRegistrationPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _landOwnerName = TextEditingController();
+  // Controllers for the form fields
   final _streetNo = TextEditingController();
   final _road = TextEditingController();
   final _city = TextEditingController();
@@ -34,6 +37,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Land Registration'),
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
@@ -43,16 +47,8 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              TextFormField(
-                controller: _landOwnerName,
-                decoration: InputDecoration(
-                  labelText: 'Land owner Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
               SizedBox(height: 20),
+              // Street No Input
               TextFormField(
                 controller: _streetNo,
                 decoration: InputDecoration(
@@ -63,6 +59,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                 ),
               ),
               SizedBox(height: 20),
+              // Road Input
               TextFormField(
                 controller: _road,
                 decoration: InputDecoration(
@@ -73,6 +70,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                 ),
               ),
               SizedBox(height: 20),
+              // City Input
               TextFormField(
                 controller: _city,
                 decoration: InputDecoration(
@@ -83,16 +81,18 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                 ),
               ),
               SizedBox(height: 20),
+              // Mobile Number Input
               TextFormField(
                 controller: _mobileNumber,
                 decoration: InputDecoration(
-                  labelText: 'Land owner Contact Number',
+                  labelText: 'Land Owner Contact Number',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
               ),
               SizedBox(height: 20),
+              // Parking Slot Input
               TextFormField(
                 controller: _parkingSlot,
                 decoration: InputDecoration(
@@ -103,6 +103,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                 ),
               ),
               SizedBox(height: 50),
+              // Submit Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(300, 50),
@@ -111,34 +112,24 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 60.0, vertical: 15.0),
+                  padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate()?? false) {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Navigate to LandOwnerRegister page, passing the land data
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LandOwnerRegister(), // Pass the userId
+                      builder: (context) => LandOwnerRegister(
+                        landData: {
+                          'landLocation': {
+                            'streetNo': _streetNo.text,
+                            'road': _road.text,
+                            'city': _city.text,
+                          },
+                          'ownerContact': _mobileNumber.text,
+                          'noParkingSlot': _parkingSlot.text,
+                        },
+                      ),
                     ));
-                    // Handle the registration logic here
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (context) => AlertDialog(
-                    //     title: Text('Registration Successful'),
-                    //     content: Text('Land Owner: $_landOwnerName\n'
-                    //         'Land Location: $_landLocation\n'
-                    //         'Mobile Number: $_mobileNumber'),
-                    //     actions: [
-                    //       TextButton(
-                    //         onPressed: () {
-                    //           Navigator.of(context).push(MaterialPageRoute(
-                    //             builder: (context) => LandOwnerRegister(), // Pass the userId
-                    //           ));
-                    //         },
-                    //         child: Text('OK'),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
                   }
                 },
                 child: Text('Next'),

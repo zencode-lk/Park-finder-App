@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const landRoute = require('./routes/landRoute');
 const placeRoutes = require('./routes/placeRoutes');
 const errorHandler = require('./utils/errorHandler');
 const vehicleRoutes = require('./routes/vehicleRoutes');
@@ -23,6 +24,7 @@ connectDB();
 app.use('/api/users', userRoutes);
 app.use('/api/places', placeRoutes);
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/land', landRoute);
 
 // Error handling middleware
 app.use(errorHandler);
