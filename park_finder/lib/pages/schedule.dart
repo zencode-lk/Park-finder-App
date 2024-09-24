@@ -20,27 +20,45 @@ class PaymentScheduleApp extends StatelessWidget {
 class PaymentScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 10),
-            // Search bar
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Search',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+            // Search bar with search button
+            Stack(
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Search',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  ),
                 ),
-              ),
+                Positioned(
+                  right: 5,
+                  top: 5,
+                  child: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      // Implement your search functionality here
+                    },
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 350),
+            SizedBox(height: screenHeight * 0.4), // Adjusted based on screen height
             // Schedule title
             Center(
               child: Text(
