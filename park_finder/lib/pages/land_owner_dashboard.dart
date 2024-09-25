@@ -7,7 +7,7 @@ import 'package:park_finder/pages/user_register.dart'; // Ensure this imports th
 void main() {
   runApp(MyApp());
 }
-
+                                       
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
-        final userType = data['userType'];  // Get userType from the response
+        final userType = data['userType']; // Get userType from the response
         final userId = data['id'];
         print('Login successful, token: $token, userType: $userType, id: $userId');
 
@@ -61,16 +61,41 @@ class _SignInScreenState extends State<SignInScreen> {
         return true;
       } else {
         print('Failed to log in: ${response.body}');
+        _showErrorDialog('Login failed. Please check your credentials and try again.');
         return false;
       }
     } catch (e) {
       print('Login error: $e');
+      _showErrorDialog('An error occurred. Please try again.');
       return false;
     } finally {
       setState(() {
         _isLoading = false; // Stop loading
       });
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+    // Clear text fields
+    _usernameController.clear();
+    _passwordController.clear();
   }
 
   @override
@@ -215,25 +240,25 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.width * 0.3, vertical: 20),
                       ),
-                      onPressed: _isLoading
-                          ? null // Disable button if loading
-                          : () async {
-                              bool success = await _loginUser();
-                              if (!success) {
-                                print('Login failed');
-                              }
-                            },
-                      child: _isLoading
-                          ? CircularProgressIndicator() // Show loading spinner
-                          : Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: const Color.fromARGB(255, 20, 20, 83),
-                              ),
-                            ),
+
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          bool success = await _loginUser();
+                          if (!success) {
+                            // Showing the error is handled in _loginUser with _showErrorDialog
+                            print('Login failed');
+                          }
+                        }
+                      },
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: const Color.fromARGB(255, 20, 20, 83),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 50), // Add some space at the bottom
+                    SizedBox(height: 50),
                   ],
                 ),
               ),

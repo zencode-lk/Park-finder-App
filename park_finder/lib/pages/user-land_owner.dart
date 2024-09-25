@@ -17,14 +17,14 @@ class UserLandOwner extends StatelessWidget {
       ),
       backgroundColor: Color(0xFF141453), // Background color
       body: SafeArea(
-        child: SingleChildScrollView( // Make the body scrollable
+        child: SingleChildScrollView( 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 'images/logio.png',
-                height: 350, // Responsive height
-                width: 350, // Responsive width
+                height: 350, 
+                width: 350, 
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -38,18 +38,18 @@ class UserLandOwner extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: screenHeight * 0.02), // Responsive spacing
+                    SizedBox(height: screenHeight * 0.02), 
                     Text(
                       'hello!',
                       style: TextStyle(
                         color: Color.fromARGB(255, 20, 20, 83),
-                        fontSize: screenWidth * 0.09, // Responsive font size
+                        fontSize: screenWidth * 0.09, 
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.05), // Responsive spacing
+                    SizedBox(height: screenHeight * 0.05), 
 
-                    // Button 1: Become a user
+                    //user button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: ElevatedButton(
@@ -59,7 +59,7 @@ class UserLandOwner extends StatelessWidget {
                           ));
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1), // Responsive size
+                          minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1), 
                           backgroundColor: Color.fromARGB(255, 20, 20, 83),
                           foregroundColor: Color.fromARGB(148, 144, 195, 255),
                           padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
@@ -71,7 +71,7 @@ class UserLandOwner extends StatelessWidget {
                           child: Text(
                             'Join user',
                             style: TextStyle(
-                              fontSize: screenWidth * 0.05, // Responsive font size
+                              fontSize: screenWidth * 0.05, 
                               color: Colors.white,
                             ),
                           ),
@@ -79,9 +79,9 @@ class UserLandOwner extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: screenHeight * 0.05), // Responsive spacing
+                    SizedBox(height: screenHeight * 0.05),
 
-                    // Button 2: Become a land owner
+                    // land owner button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: ElevatedButton(
@@ -91,7 +91,7 @@ class UserLandOwner extends StatelessWidget {
                           ));
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1), // Responsive size
+                          minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1),
                           backgroundColor: Color.fromARGB(255, 20, 20, 83),
                           foregroundColor: Color.fromARGB(148, 144, 195, 255),
                           padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
@@ -103,14 +103,14 @@ class UserLandOwner extends StatelessWidget {
                           child: Text(
                             'Join land owner',
                             style: TextStyle(
-                              fontSize: screenWidth * 0.05, // Responsive font size
+                              fontSize: screenWidth * 0.05, 
                               color: Colors.white,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.15), // Add some padding at the bottom
+                    SizedBox(height: screenHeight * 0.15), 
                   ],
                 ),
               ),

@@ -61,12 +61,15 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                   top: 5,
                   child: IconButton(
                     icon: Icon(Icons.search),
+
                     onPressed: _fetchNearbyPlaces,
+
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
+
            // Adjusted space for places list
             // Display nearby places
             if (_places.isNotEmpty)
@@ -80,6 +83,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 }).toList(),
               ),
             SizedBox(height: screenHeight * 0.025), // Space before schedule title
+
             // Schedule title
             Center(
               child: Text(
@@ -248,24 +252,24 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Text(
-                  'Dashboard',
-                  style: TextStyle(
-                    color: Color.fromRGBO(20, 20, 83, 1),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context); // Close the dialog
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Colors.white,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(30),
+              //     ),
+              //   ),
+              //   child: Text(
+              //     'Dashboard',
+              //     style: TextStyle(
+              //       color: Color.fromRGBO(20, 20, 83, 1),
+              //       fontSize: 16,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         );

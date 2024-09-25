@@ -29,7 +29,7 @@ class GetStartedScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background gradient
+          // Background colour
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -52,11 +52,11 @@ class GetStartedScreen extends StatelessWidget {
             right: 20,
             child: Image.asset(
               'images/logio.png',
-              height: 80, // Fixed size to match the image
+              height: 80, // this is the image size
             ),
           ),
 
-          // Transparent faded logo in the middle-left of the screen
+          // Transparent  logo 
           Positioned(
             left: -100,
             top: MediaQuery.of(context).size.height * 0.21,
@@ -64,45 +64,45 @@ class GetStartedScreen extends StatelessWidget {
               opacity: 0.3, // Transparent logo for the background
               child: Image.asset(
                 'images/logio.png',
-                height: 300, // Larger faded image
+                height: 300, 
                 fit: BoxFit.cover,
               ),
             ),
           ),
 
-          // Main text ("PARK FINDER") in the center of the screen
+          // here Main text ("PARK FINDER") 
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.30, // Adjust this value to move the text up or down
+            top: MediaQuery.of(context).size.height * 0.30, 
             left: 0,
             right: 0,
             child: Column(
               children: [
-                // Align "PARK" to the left
+            
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 100), // Adjust left padding to move text further to the left
+                    padding: const EdgeInsets.only(left: 100), 
                     child: Text(
                       'PARK',
                       style: TextStyle(
                         fontSize: 50,
-                        fontFamily: 'Race Sport', // Font for "PARK"
+                        fontFamily: 'Race Sport', 
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-                // Align "FINDER" to the right
+               
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(right:90), // Adjust right padding to move text further to the right
+                    padding: const EdgeInsets.only(right:90), 
                     child: Text(
                       'FINDER',
                       style: TextStyle(
                         fontSize: 50,
-                        fontFamily: 'Race Sport', // Font for "FINDER"
+                        fontFamily: 'Race Sport', 
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -113,14 +113,14 @@ class GetStartedScreen extends StatelessWidget {
             ),
           ),
           
-          // "Get Started" button near the bottom
+          // "Get Started" button 
           Positioned(
-            bottom: 150, // Adjust this value to move the button up or down
+            bottom: 150, 
             left: 0,
             right: 0,
             child: Center(
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () {                    //   here when the button is clicked it navigates to term terms and conditions 
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => TermsAndConditionsPage(navigateToLandOwnerPage: true,),
                   ));
@@ -141,9 +141,9 @@ class GetStartedScreen extends StatelessWidget {
             ),
           ),
 
-          // "I already have an account" text button near the bottom
+          
           Positioned(
-            bottom: 110, // Adjust this value to move the button up or down
+            bottom: 110,
             left: 0,
             right: 0,
             child: Center(

@@ -76,7 +76,7 @@ class _UserRegisterState extends State<UserRegister> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20), // Add space at the top
+                  SizedBox(height: 20), 
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(

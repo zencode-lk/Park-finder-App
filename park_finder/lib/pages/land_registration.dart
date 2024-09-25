@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LandRegistrationPage(), // Set the home to your LandRegistrationPage
+      home: LandRegistrationPage(), 
     );
   }
 }
