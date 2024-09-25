@@ -240,6 +240,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.width * 0.3, vertical: 20),
                       ),
+
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           bool success = await _loginUser();

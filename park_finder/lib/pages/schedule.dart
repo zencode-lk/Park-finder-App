@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(PaymentScheduleApp());
@@ -17,7 +19,15 @@ class PaymentScheduleApp extends StatelessWidget {
   }
 }
 
-class PaymentScheduleScreen extends StatelessWidget {
+class PaymentScheduleScreen extends StatefulWidget {
+  @override
+  _PaymentScheduleScreenState createState() => _PaymentScheduleScreenState();
+}
+
+class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
+  final TextEditingController _locationController = TextEditingController();
+  List<dynamic> _places = []; // List to hold nearby places
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -37,6 +47,7 @@ class PaymentScheduleScreen extends StatelessWidget {
             Stack(
               children: [
                 TextField(
+                  controller: _locationController,
                   decoration: InputDecoration(
                     labelText: 'Search',
                     border: OutlineInputBorder(
@@ -50,15 +61,29 @@ class PaymentScheduleScreen extends StatelessWidget {
                   top: 5,
                   child: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
-                 
-                    },
+
+                    onPressed: _fetchNearbyPlaces,
+
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.4), 
+
+           // Adjusted space for places list
+            // Display nearby places
+            if (_places.isNotEmpty)
+              Column(
+                children: _places.map((place) {
+                  return ListTile(
+                    title: Text(place['name']),
+                    subtitle: Text(place['vicinity']),
+                    onTap: () => _showUnavailablePopup(), // Show popup when tapped
+                  );
+                }).toList(),
+              ),
+            SizedBox(height: screenHeight * 0.025), // Space before schedule title
+
             // Schedule title
             Center(
               child: Text(
@@ -98,7 +123,7 @@ class PaymentScheduleScreen extends StatelessWidget {
             // Payment amount
             Center(
               child: Text(
-                'LKR 200,000',
+                'LKR -',
                 style: TextStyle(
                   fontSize: 28,
                   color: Color.fromRGBO(20, 20, 83, 1),
@@ -110,11 +135,12 @@ class PaymentScheduleScreen extends StatelessWidget {
             // Pay button
             ElevatedButton(
               onPressed: () {
-                _simulatePayment(context);
+               
+                _showUnavailablePopup();
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15),
-                backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+                backgroundColor: Color.fromRGBO(20, 20, 83, 0.5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -133,16 +159,78 @@ class PaymentScheduleScreen extends StatelessWidget {
     );
   }
 
-  // Simulate a payment process
-  void _simulatePayment(BuildContext context) async {
-    // Simulate some payment processing delay (for example, 2 seconds)
-    await Future.delayed(Duration(seconds: 2));
+  Future<void> _fetchNearbyPlaces() async {
+    final String location = _locationController.text;
+    final String url = 'http://192.168.43.28:3000/api/places?location=$location&radius=300';
 
-    // After payment process is complete, showing the success dialog
-    _showSuccessDialog(context);
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        // Access the results key directly to get the list of places
+        final List<dynamic> places = data['results'];
+        setState(() {
+          _places = places; // Update the state with fetched places
+        });
+      } else {
+        print("Failed to load places: ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      print("Error fetching places: $e");
+    }
   }
 
-  // the success dialog after payment is completed
+  // Show popup when scheduling is unavailable
+  void _showUnavailablePopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Scheduling currently unavailable.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Text(
+                  'Close',
+                  style: TextStyle(
+                    color: Color.fromRGBO(20, 20, 83, 1),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Simulate a payment process
+ 
+
+  // Show the success dialog after payment is completed
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
