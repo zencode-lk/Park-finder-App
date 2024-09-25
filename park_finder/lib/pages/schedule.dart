@@ -164,24 +164,24 @@ class PaymentScheduleScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Text(
-                  'Dashboard',
-                  style: TextStyle(
-                    color: Color.fromRGBO(20, 20, 83, 1),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context); // Close the dialog
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Colors.white,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(30),
+              //     ),
+              //   ),
+              //   child: Text(
+              //     'Dashboard',
+              //     style: TextStyle(
+              //       color: Color.fromRGBO(20, 20, 83, 1),
+              //       fontSize: 16,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         );
