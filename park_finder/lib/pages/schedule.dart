@@ -157,7 +157,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
 
   Future<void> _fetchNearbyPlaces() async {
     final String location = _locationController.text;
-    final String url = 'http://localhost:3000/api/places?location=$location&radius=300';
+    final String url = 'http://192.168.43.28:3000/api/places?location=$location&radius=300';
 
     try {
       final response = await http.get(Uri.parse(url));
