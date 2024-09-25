@@ -215,26 +215,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: size.width * 0.3, vertical: 20),
                       ),
-
-                      onPressed: () async {
-                        bool success = await _loginUser();
-                        if (success) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                                userId: _usernameController.text),
-                          ));
-                        } else {
-                          print('Login failed');
-                        }
-                      },
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: const Color.fromARGB(255, 20, 20, 83),
-                        ),
-                        
-                      ),
+                      onPressed: _isLoading
+                          ? null // Disable button if loading
+                          : () async {
+                              bool success = await _loginUser();
+                              if (!success) {
+                                print('Login failed');
+                              }
+                            },
+                      child: _isLoading
+                          ? CircularProgressIndicator() // Show loading spinner
+                          : Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: const Color.fromARGB(255, 20, 20, 83),
+                              ),
+                            ),
                     ),
                     SizedBox(height: 50), // Add some space at the bottom
                   ],
