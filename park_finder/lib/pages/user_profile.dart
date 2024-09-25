@@ -14,10 +14,10 @@ class UserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[100], // Background color similar to the image
+      backgroundColor: Colors.deepPurple[100], 
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple[300], // Similar back arrow design
-        elevation: 0, // No shadow
+        backgroundColor: Colors.deepPurple[300], 
+        elevation: 0, 
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {

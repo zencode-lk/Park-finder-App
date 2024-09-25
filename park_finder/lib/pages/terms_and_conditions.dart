@@ -43,7 +43,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
         title: Text(
           'Terms and Conditions',
-          style: TextStyle(color: Colors.white), // Heading text color set to white
+          style: TextStyle(color: Colors.white), 
         ),
       ),
       body: SingleChildScrollView(

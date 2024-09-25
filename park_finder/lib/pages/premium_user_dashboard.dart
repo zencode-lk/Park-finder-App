@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF746DAA), // Updated background color
+      backgroundColor: Color(0xFF746DAA), 
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Find Parking button with custom size
+                        // Find Parking button 
                         buildMainButton(
                           context,
                           'Find Parking',
@@ -44,8 +44,8 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => ParkingLocationScreen(),
                             ));
                           },
-                          320.0, // Fixed width for Find Parking button
-                          150.0, // Increased height for Find Parking button
+                          320.0,
+                          150.0, 
                         ),
                         SizedBox(height: 16),
                         buildMainButton(
@@ -57,8 +57,8 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => PaymentScheduleScreen(),
                             ));
                           },
-                          320.0, // Fixed width for other buttons
-                          120.0, // Standard height for other buttons
+                          320.0, 
+                          120.0, 
                         ),
                         SizedBox(height: 16),
                         buildMainButton(
@@ -70,8 +70,8 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => ReviewPage(),
                             ));
                           },
-                          320.0, // Fixed width for other buttons
-                          120.0, // Standard height for other buttons
+                          320.0, 
+                          120.0, 
                         ),
                         SizedBox(height: 16),
                         buildMainButton(
@@ -85,8 +85,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ));
                           },
-                          320.0, // Fixed width for other buttons
-                          120.0, // Standard height for other buttons
+                          320.0, 
+                          120.0, 
                         ),
                       ],
                     ),
@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
 
-              // User Icon in the top-right corner
+              // User Icon 
               Positioned(
                 top: 16,
                 right: 16,
@@ -108,12 +108,12 @@ class HomeScreen extends StatelessWidget {
                         email: userEmail,
                         vehicles: userVehicles,
                       ),
-                    )); // Corrected this part
+                    )); 
                   },
                 ),
               ),
 
-              // Customer Service Icon in the bottom right corner
+              // Customer Service Icon 
               Positioned(
                 bottom: 16,
                 right: 16,
@@ -152,7 +152,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 onTap: () {
-                                  // Add email functionality
+                                  // Added the  email functionality
                                   // For example: launchUrl(Uri(scheme: 'mailto', path: 'support@zencode.com'));
                                 },
                               ),
@@ -172,7 +172,7 @@ class HomeScreen extends StatelessWidget {
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop(); // Close the dialog
+                                Navigator.of(context).pop(); 
                               },
                               child: Text('Close'),
                             ),
@@ -190,7 +190,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Build Main Button function with custom button height, fixed width, and styling
+  
   Widget buildMainButton(BuildContext context, String title, String imagePath,
       VoidCallback onTap, double width, double height) {
     return GestureDetector(

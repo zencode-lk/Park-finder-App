@@ -15,7 +15,7 @@ class _ReviewPageState extends State<ReviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Reviews'),
-        backgroundColor: Color(0xFF746DAA), // Using the same background color as home page
+        backgroundColor: Color(0xFF746DAA), 
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,7 +31,7 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
             SizedBox(height: 16),
             
-            // Rating section (Star rating system)
+            // Rating section 
             Text('Rate your experience:'),
             SizedBox(height: 8),
             Row(
@@ -52,7 +52,7 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
             SizedBox(height: 16),
 
-            // Review text input field
+            
             Text('Write your review:'),
             SizedBox(height: 8),
             TextField(

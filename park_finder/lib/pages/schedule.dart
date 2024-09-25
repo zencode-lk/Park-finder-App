@@ -51,14 +51,14 @@ class PaymentScheduleScreen extends StatelessWidget {
                   child: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
-                      // Implement your search functionality here
+                 
                     },
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.4), // Adjusted based on screen height
+            SizedBox(height: screenHeight * 0.4), 
             // Schedule title
             Center(
               child: Text(
@@ -138,11 +138,11 @@ class PaymentScheduleScreen extends StatelessWidget {
     // Simulate some payment processing delay (for example, 2 seconds)
     await Future.delayed(Duration(seconds: 2));
 
-    // After payment process is complete, show success dialog
+    // After payment process is complete, showing the success dialog
     _showSuccessDialog(context);
   }
 
-  // Show the success dialog after payment is completed
+  // the success dialog after payment is completed
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
