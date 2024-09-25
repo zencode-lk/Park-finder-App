@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:park_finder/pages/land_registration.dart';
+import 'package:park_finder/pages/review.dart';
+import 'package:park_finder/pages/land_owner_profile.dart';
+import 'package:park_finder/pages/user_register.dart'; // Ensure this imports the correct profile page
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Land Owner Dashboard',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: LandOwnerDashboardScreen(userId: 'user123'),
+    );
+  }
+}
 
 class LandOwnerDashboardScreen extends StatelessWidget {
   final String userId;
+
   LandOwnerDashboardScreen({required this.userId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,10 +41,36 @@ class LandOwnerDashboardScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(
+          PopupMenuButton<String>(
             icon: Icon(Icons.person, color: Colors.white),
-            onPressed: () {
-              // Add profile navigation
+            onSelected: (String choice) {
+              switch (choice) {
+                case 'Profile':
+                  _navigateToProfile(context);
+                  break;
+                case 'Reviews':
+                  _showReviews(context);
+                  break;
+                case 'Terms and Conditions':
+                  _showTermsAndConditions(context);
+                  break;
+                case 'Become a User':
+                  _navigateToBecomeUser(context);
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {
+                'Profile',
+                'Reviews',
+                'Terms and Conditions',
+                'Become a User'
+              }.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
             },
           ),
         ],
@@ -47,9 +96,7 @@ class LandOwnerDashboardScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add action for floating button
-        },
+        onPressed: () {},
         backgroundColor: Colors.purple,
         child: Icon(Icons.add, color: Colors.white),
       ),
@@ -70,7 +117,6 @@ class LandOwnerDashboardScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Index row (e.g., "01")
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -80,10 +126,8 @@ class LandOwnerDashboardScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10),
-          // Number count section
           Row(
             children: [
-              // Blank square (if you have content to place, you can modify here)
               Expanded(
                 child: Container(
                   height: 70,
@@ -94,7 +138,6 @@ class LandOwnerDashboardScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10),
-              // Count with total count
               Container(
                 width: 60,
                 height: 70,
@@ -117,5 +160,49 @@ class LandOwnerDashboardScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _navigateToProfile(BuildContext context) {
+    // Navigate to the Profile page with sample data
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => LandOwnerProfilePage(
+        name: 'John Doe',
+        email: 'johndoe@example.com',
+      ),
+    ));
+  }
+
+  void _showReviews(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ReviewPage(),
+    ));
+  }
+
+  void _showTermsAndConditions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Terms and Conditions'),
+          content: SingleChildScrollView(
+            child: Text('These are the terms and conditions...'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _navigateToBecomeUser(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => UserRegister(),
+    ));
   }
 }
