@@ -58,7 +58,13 @@ class _UserRegisterState extends State<UserRegister> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+          title: Text(
+          'user registration ',
+          style: TextStyle(color: Colors.white), 
+        ),
       ),
+
+      
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
