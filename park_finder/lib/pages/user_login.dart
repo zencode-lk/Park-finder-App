@@ -22,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _isLoading = false;
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://localhost:3000/api/users/login');
+    final url = Uri.parse('http://172.20.10.2:3000/api/users/login');
 
     setState(() {
       _isLoading = true; // Start loading
@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
-        final userType = data['userType']; // Get userType from the response
+        final userType = data['userType']; 
         final userId = data['id'];
         print('Login successful, token: $token, userType: $userType, id: $userId');
 
@@ -51,11 +51,11 @@ class _SignInScreenState extends State<SignInScreen> {
         // Navigate based on the userType
         if (userType == 'landowner') {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => LandOwnerDashboardScreen(userId: userId), // Navigate to landowner dashboard
+            builder: (context) => LandOwnerScreen(userId: userId), 
           ));
         } else {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => HomeScreen(userId: userId), // Navigate to normal user dashboard
+            builder: (context) => HomeScreen(userId: userId), 
           ));
         }
         return true;
@@ -70,7 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
       return false;
     } finally {
       setState(() {
-        _isLoading = false; // Stop loading
+        _isLoading = false; 
       });
     }
   }
@@ -80,47 +80,44 @@ class _SignInScreenState extends State<SignInScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
       },
     );
-    // Clear text fields
     _usernameController.clear();
     _passwordController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(20, 20, 83, 1),
-        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
+        backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
       ),
-      backgroundColor: Color.fromARGB(255, 20, 20, 83),
+      backgroundColor: const Color.fromARGB(255, 20, 20, 83),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Image.asset(
               'images/logio.png',
-              height: size.height * 0.35, // Responsive height
-              width: size.width * 0.7, // Responsive width
+              height: 350,
+              width: 350, 
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 0),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              height: size.height * 0.65, // Adjust height
-              decoration: BoxDecoration(
+              height: 435, // Fixed height
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25),
@@ -132,8 +129,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'hello!',
                       style: TextStyle(
                         color: Color.fromARGB(255, 20, 20, 83),
@@ -141,23 +138,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     TextFormField(
                       controller: _usernameController,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 20, 20, 83),
                       ),
                       decoration: InputDecoration(
-                        labelText: 'User Name',
-                        hintText: 'User Name',
-                        hintStyle: TextStyle(
+                        labelText: 'Email',
+                        hintText: 'Email',
+                        hintStyle: const TextStyle(
                           color: Color.fromARGB(255, 20, 20, 83),
                         ),
                         filled: true,
-                        fillColor: Color.fromARGB(26, 255, 255, 255),
+                        fillColor: const Color.fromARGB(26, 255, 255, 255),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Color.fromARGB(255, 20, 20, 83),
                             width: 1.0,
                           ),
@@ -170,23 +167,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 20, 20, 83),
                       ),
                       decoration: InputDecoration(
                         labelText: 'Password',
                         hintText: 'Password',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           color: Color.fromARGB(255, 20, 20, 83),
                         ),
                         filled: true,
-                        fillColor: Color.fromARGB(26, 255, 255, 255),
+                        fillColor: const Color.fromARGB(26, 255, 255, 255),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Color.fromARGB(255, 20, 20, 83),
                             width: 1.0,
                           ),
@@ -200,14 +197,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
+                        const Text(
                           'I agree to the',
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 20, 20, 83),
+                            color: Color.fromARGB(255, 20, 20, 83),
                           ),
                         ),
                         TextButton(
@@ -229,36 +226,33 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ],
                     ),
-                    Spacer(), // Pushes the button to the bottom
+                    const SizedBox(height: 50,), 
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(146, 255, 255, 255),
-                        foregroundColor: Color.fromARGB(148, 144, 195, 255),
+                        backgroundColor: const Color.fromARGB(255, 20, 20, 83), 
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.3, vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                       ),
 
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           bool success = await _loginUser();
                           if (!success) {
-                            // Showing the error is handled in _loginUser with _showErrorDialog
                             print('Login failed');
                           }
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         'Sign In',
                         style: TextStyle(
                           fontSize: 18,
-                          color: const Color.fromARGB(255, 20, 20, 83),
                         ),
                       ),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

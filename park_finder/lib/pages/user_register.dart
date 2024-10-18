@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:park_finder/pages/vehical_registration.dart';
 import 'dart:convert';
 
 import 'user_login.dart';
@@ -21,7 +20,7 @@ class _UserRegisterState extends State<UserRegister> {
   final _confirmPasswordController = TextEditingController();
 
   Future<bool> _registerUser() async {
-    final url = Uri.parse('http://localhost:3000/api/users/register');
+    final url = Uri.parse('http://172.20.10.2:3000/api/users/register');
 
     try {
       final response = await http.post(
@@ -34,7 +33,7 @@ class _UserRegisterState extends State<UserRegister> {
           'email': _emailController.text,
           'nic': _nicController.text,
           'password': _passwordController.text,
-          'comfirmPassword': _confirmPasswordController.text,
+          'confirmPassword': _confirmPasswordController.text,
         }),
       );
 
@@ -57,133 +56,131 @@ class _UserRegisterState extends State<UserRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(20, 20, 83, 1),
-          title: Text(
-          'user registration ',
-          style: TextStyle(color: Colors.white), 
+        backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        title: const Text(
+          'User Registration',
+          style: TextStyle(color: Colors.white),
         ),
       ),
-
-      
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.white, Color(0xFF9E9EEC)],
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
           ),
+        ),
+        child: Center( 
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 20), 
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Firstname',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+            child: SingleChildScrollView( 
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _firstNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Firstname',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Last name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _lastNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Last name',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _userNameController,
-                    decoration: InputDecoration(
-                      labelText: 'User name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _userNameController,
+                      decoration: InputDecoration(
+                        labelText: 'User name',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _nicController,
-                    decoration: InputDecoration(
-                      labelText: 'NIC',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _nicController,
+                      decoration: InputDecoration(
+                        labelText: 'NIC',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
+                      keyboardType: TextInputType.text, 
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
+                      obscureText: true,
                     ),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
+                      obscureText: true,
                     ),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 30),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(350, 50),
-                      backgroundColor: Color(0xFF0C0C5D), // Button color
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(350, 50),
+                        backgroundColor: const Color(0xFF0C0C5D), 
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 60.0, vertical: 15.0),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 60.0, vertical: 15.0),
-                    ),
-                   
-                    onPressed: () async {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        bool success = await _registerUser();
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          bool success = await _registerUser();
 
-                        if (success) { 
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignInScreen(), // Pass the userId
-                          ));
+                          if (success) { 
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignInScreen(),
+                            ));
+                          }
                         }
-                      }
-                    },
-
-                    child: Text('Next'),
-                  ),
-                ],
+                      },
+                      child: const Text('Next'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

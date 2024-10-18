@@ -2,23 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
-  runApp(PaymentScheduleApp());
-}
-
-class PaymentScheduleApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Payment Schedule',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: PaymentScheduleScreen(),
-    );
-  }
-}
-
 class PaymentScheduleScreen extends StatefulWidget {
   @override
   _PaymentScheduleScreenState createState() => _PaymentScheduleScreenState();
@@ -30,20 +13,25 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(20, 20, 83, 1),
-        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
+        title: const Text("Schedule"),
+        backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
       ),
-      body: SingleChildScrollView(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
+          ),
+        ),
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 10),
-            // Search bar with search button
+            const SizedBox(height: 10),
             Stack(
               children: [
                 TextField(
@@ -53,24 +41,21 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   ),
                 ),
                 Positioned(
                   right: 5,
                   top: 5,
                   child: IconButton(
-                    icon: Icon(Icons.search),
-
+                    icon: const Icon(Icons.search),
                     onPressed: _fetchNearbyPlaces,
-
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
 
-           // Adjusted space for places list
             // Display nearby places
             if (_places.isNotEmpty)
               Column(
@@ -78,14 +63,14 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                   return ListTile(
                     title: Text(place['name']),
                     subtitle: Text(place['vicinity']),
-                    onTap: () => _showUnavailablePopup(), // Show popup when tapped
+                    onTap: () => _showUnavailablePopup(), 
                   );
                 }).toList(),
               ),
-            SizedBox(height: screenHeight * 0.025), // Space before schedule title
+            const SizedBox(height: 300), 
 
             // Schedule title
-            Center(
+            const Center(
               child: Text(
                 'SCHEDULE',
                 style: TextStyle(
@@ -95,7 +80,8 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+
             // Date Picker
             TextField(
               decoration: InputDecoration(
@@ -107,7 +93,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
               ),
               keyboardType: TextInputType.datetime,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Time Picker
             TextField(
               decoration: InputDecoration(
@@ -119,9 +105,9 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
               ),
               keyboardType: TextInputType.datetime,
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             // Payment amount
-            Center(
+            const Center(
               child: Text(
                 'LKR -',
                 style: TextStyle(
@@ -131,21 +117,20 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
-            // Pay button
+            const SizedBox(height: 30),
+
             ElevatedButton(
               onPressed: () {
-               
                 _showUnavailablePopup();
               },
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15),
-                backgroundColor: Color.fromRGBO(20, 20, 83, 0.5),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                backgroundColor: const Color.fromRGBO(20, 20, 83, 0.5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Pay',
                 style: TextStyle(
                   color: Colors.white,
@@ -189,11 +174,11 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+          backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 'Scheduling currently unavailable.',
                 style: TextStyle(
                   color: Colors.white,
@@ -204,7 +189,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // Close the dialog
+                  Navigator.pop(context); 
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -212,7 +197,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Close',
                   style: TextStyle(
                     color: Color.fromRGBO(20, 20, 83, 1),
@@ -227,9 +212,6 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
     );
   }
 
-  // Simulate a payment process
- 
-
   // Show the success dialog after payment is completed
   void _showSuccessDialog(BuildContext context) {
     showDialog(
@@ -239,8 +221,8 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          backgroundColor: Color.fromRGBO(20, 20, 83, 1),
-          content: Column(
+          backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
+          content: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
@@ -252,24 +234,6 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     Navigator.pop(context); // Close the dialog
-              //   },
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: Colors.white,
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(30),
-              //     ),
-              //   ),
-              //   child: Text(
-              //     'Dashboard',
-              //     style: TextStyle(
-              //       color: Color.fromRGBO(20, 20, 83, 1),
-              //       fontSize: 16,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         );

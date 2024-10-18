@@ -12,10 +12,10 @@ class UserLandOwner extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(20, 20, 83, 1),
-        foregroundColor: Color.fromRGBO(255, 255, 255, 1),
+        backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
+        foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
       ),
-      backgroundColor: Color(0xFF141453), // Background color
+      backgroundColor: const Color(0xFF141453), 
       body: SafeArea(
         child: SingleChildScrollView( 
           child: Column(
@@ -28,7 +28,7 @@ class UserLandOwner extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25),
@@ -42,7 +42,7 @@ class UserLandOwner extends StatelessWidget {
                     Text(
                       'hello!',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 20, 20, 83),
+                        color: const Color.fromARGB(255, 20, 20, 83),
                         fontSize: screenWidth * 0.09, 
                         fontWeight: FontWeight.bold,
                       ),
@@ -55,13 +55,13 @@ class UserLandOwner extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ParkingLocationScreen(),
+                            builder: (context) => ParkingLocationScreen(isLoggedIn: false,),
                           ));
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1), 
-                          backgroundColor: Color.fromARGB(255, 20, 20, 83),
-                          foregroundColor: Color.fromARGB(148, 144, 195, 255),
+                          backgroundColor: const Color.fromARGB(255, 20, 20, 83),
+                          foregroundColor: const Color.fromARGB(148, 144, 195, 255),
                           padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -81,7 +81,6 @@ class UserLandOwner extends StatelessWidget {
 
                     SizedBox(height: screenHeight * 0.05),
 
-                    // land owner button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: ElevatedButton(
@@ -92,8 +91,8 @@ class UserLandOwner extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(screenWidth * 0.9, screenHeight * 0.1),
-                          backgroundColor: Color.fromARGB(255, 20, 20, 83),
-                          foregroundColor: Color.fromARGB(148, 144, 195, 255),
+                          backgroundColor: const Color.fromARGB(255, 20, 20, 83),
+                          foregroundColor: const Color.fromARGB(148, 144, 195, 255),
                           padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),

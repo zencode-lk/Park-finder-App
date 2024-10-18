@@ -14,33 +14,40 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reviews'),
-        backgroundColor: Color(0xFF746DAA), 
+        title: const Text('Reviews'),
+        backgroundColor: const Color.fromARGB(255, 20, 20, 83),
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
+          ),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Leave a Review',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             
-            // Rating section 
-            Text('Rate your experience:'),
-            SizedBox(height: 8),
+            const Text('Rate your experience:'),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(5, (index) {
                 return IconButton(
                   icon: Icon(
                     index < _currentRating ? Icons.star : Icons.star_border,
-                    color: Colors.amber,
+                    color: const Color.fromARGB(255, 20, 20, 83),
                   ),
                   onPressed: () {
                     setState(() {
@@ -50,22 +57,20 @@ class _ReviewPageState extends State<ReviewPage> {
                 );
               }),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-            
-            Text('Write your review:'),
-            SizedBox(height: 8),
+            const Text('Write your review:'),
+            const SizedBox(height: 8),
             TextField(
               controller: _reviewController,
               maxLines: 4,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter your review here',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-            // Submit button
             ElevatedButton(
               onPressed: () {
                 if (_reviewController.text.isNotEmpty && _currentRating > 0) {
@@ -74,53 +79,57 @@ class _ReviewPageState extends State<ReviewPage> {
                       'rating': _currentRating,
                       'review': _reviewController.text,
                     });
-                    _reviewController.clear(); // Clear the text field after submission
-                    _currentRating = 0; // Reset the rating
+                    _reviewController.clear(); 
+                    _currentRating = 0; 
                   });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Review submitted!'),
                   ));
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Please provide a rating and review.'),
                   ));
                 }
               },
-              child: Text('Submit Review'),
+              child: Text(
+                'Submit Review',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF746DAA), // Button color
+                backgroundColor: const Color.fromARGB(255, 20, 20, 83), // Button color
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-            // List of reviews
             Expanded(
               child: _reviews.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No reviews yet. Be the first to leave one!',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: _reviews.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: Icon(Icons.person, size: 40, color: Colors.grey),
-                          title: Row(
-                            children: [
-                              Text(
-                                _reviews[index]['rating'].toString(),
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(Icons.star, color: Colors.amber, size: 16),
-                            ],
-                          ),
-                          subtitle: Text(_reviews[index]['review']),
-                        );
-                      },
+                ? const Center(
+                    child: Text(
+                      'No reviews yet. Be the first to leave one!',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
+                  )
+            : ListView.builder(
+                itemCount: _reviews.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: const Icon(Icons.person, size: 40, color: Colors.grey),
+                    title: Row(
+                      children: [
+                        Text(
+                          _reviews[index]['rating'].toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                      ],
+                    ),
+                    subtitle: Text(_reviews[index]['review']),
+                  );
+                },
+              ),
             ),
           ],
         ),

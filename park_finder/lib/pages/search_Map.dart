@@ -2,33 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:park_finder/pages/premium_user_dashboard.dart';
+import 'package:park_finder/pages/schedule.dart';
+import 'package:park_finder/pages/user_login.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart'; 
-import 'package:geolocator/geolocator.dart'; // Add this for distance calculations
-
+import 'package:geolocator/geolocator.dart'; // For distance calculations
 import 'package:park_finder/pages/user_register.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ParkingLocationScreen(),
-    );
-  }
-}
 
 class ParkingLocationScreen extends StatefulWidget {
+  final bool isLoggedIn; 
+
+  ParkingLocationScreen({required this.isLoggedIn});
+
   @override
   _ParkingLocationScreenState createState() => _ParkingLocationScreenState();
 }
 
 class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   GoogleMapController? mapController;
-  LatLng _currentLocation = LatLng(40.7580, -73.9855); // Default location
+  LatLng _currentLocation = const LatLng(40.7580, -73.9855); // Default location
   final Set<Marker> _markers = {};
   final Location _location = Location();
   List<dynamic> _places = [];
@@ -60,8 +54,8 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
       final LocationData locationData = await _location.getLocation();
       setState(() {
         _currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
-        _addMarkers(); // Add markers after getting the location
-        _fetchNearbyPlaces(); // Fetch nearby places
+        _addMarkers();
+        _fetchNearbyPlaces(); 
       });
     } catch (e) {
       print("Error getting location: $e");
@@ -69,8 +63,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   }
 
   Future<void> _fetchNearbyPlaces() async {
-    final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000';
-    print(url);
+    final String url = 'http://172.20.10.2:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000';
     
     try {
       final response = await http.get(Uri.parse(url));
@@ -129,9 +122,9 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   void _addMarkers() {
     final List<Marker> markers = [
       Marker(
-        markerId: MarkerId('current_location'),
+        markerId: const MarkerId('current_location'),
         position: _currentLocation,
-        infoWindow: InfoWindow(title: 'Your Location'),
+        infoWindow: const InfoWindow(title: 'Your Location'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
       ),
     ];
@@ -160,14 +153,14 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color.fromRGBO(20, 20, 83, 1),
+          backgroundColor: const Color.fromRGBO(20, 20, 83, 1),
           content: Container(
             width: 300,
             height: 200,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Click here to join as a premium user today",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -176,9 +169,9 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                     color: Color.fromARGB(255, 255, 255, 255),
                   )
                 ),
-                SizedBox(height: 20),
-                Text(
-                  "Shedule",
+                const SizedBox(height: 20),
+                const Text(
+                  "Schedule",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18, 
@@ -186,12 +179,12 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                     color: Color.fromARGB(255, 255, 255, 255),
                   )
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserRegister(),
-                    ));// Close the popup
+                      builder: (context) => UserRegister(),
+                    ));
                   },
                   child: Text(
                     "PREMIUM",
@@ -200,15 +193,14 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                       color: Color.fromRGBO(20, 20, 83, 1),
                     ),
                   ),
-                  
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Background color
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255), 
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     textStyle: TextStyle(fontSize: 16),
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   "Just for LKR 10,000",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -224,126 +216,205 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
+      appBar: AppBar(
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)], 
+          ),
+        ),
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            textAlign: TextAlign.center,
-            'Your Nearest Parking Location...',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30,         
+          children: [
+            const Text(
+              textAlign: TextAlign.center,
+              'Your Nearest Parking Location...',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Race Sport',
+                fontSize: 30,         
+              ),
             ),
-          ),
-          Text(
-            textAlign: TextAlign.center,
-            'Please select a parking location for navigation',
-            style: TextStyle(
-              fontSize: 19,         
+            const Text(
+              textAlign: TextAlign.center,
+              'Please select a parking location for navigation',
+              style: TextStyle(
+                fontSize: 19,         
+              ),
             ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 20, 20, 83),
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-            ),
-            height: 300,
-            width: 375,
-            child: Stack(
-              children: [
-                GoogleMap(
-                  onMapCreated: (controller) {
-                    mapController = controller;
-                    if (_currentLocation != null) {
-                      mapController!.animateCamera(
-                        CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
-                      );
-                    }
-                  },
-                  initialCameraPosition: CameraPosition(
-                    target: _currentLocation,
-                    zoom: 16.0,
+            const SizedBox(height: 20),
+            Container(
+              height: 350, 
+              width: 370,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3), // Changes the position of the shadow
                   ),
-                  markers: _markers,
-                ),
-                Positioned(
-                  bottom: 10,
-                  left: 10,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (mapController != null) {
-                        mapController!.animateCamera(
-                          CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
-                        );
-                      }
-                    },
-                    child: Text(
-                      'Re-center',
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 23, 117, 239), 
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20), 
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      onMapCreated: (controller) {
+                        mapController = controller;
+                        if (_currentLocation != null) {
+                          mapController!.animateCamera(
+                            CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
+                          );
+                        }
+                      },
+                      initialCameraPosition: CameraPosition(
+                        target: _currentLocation,
+                        zoom: 16.0,
+                      ),
+                      markers: _markers,
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (mapController != null) {
+                            mapController!.animateCamera(
+                              CameraUpdate.newLatLngZoom(_currentLocation, 16.0),
+                            );
+                          }
+                        },
+                        child: const Text(
+                          'Re-center',
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 23, 117, 239), 
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _places.length,
-              itemBuilder: (context, index) {
-                final place = _places[index]['place'];
-                final distance = _places[index]['distance']; // Get the distance
-                final LatLng placeLocation = LatLng(
-                  place['geometry']['location']['lat'],
-                  place['geometry']['location']['lng'],
-                );
-                return ListTile(
-                  leading: Icon(Icons.location_pin),
-                  title: Text(place['name'] ?? 'No Name'), // Display place name
-                  subtitle: Text(place['vicinity'] ?? 'No Address'), // Display address
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('${distance.toStringAsFixed(2)} km'), // Display distance
-                    ],
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: _places.length,
+                itemBuilder: (context, index) {
+                  final place = _places[index]['place'];
+                  final distance = _places[index]['distance']; // Get the distance
+                  final LatLng placeLocation = LatLng(
+                    place['geometry']['location']['lat'],
+                    place['geometry']['location']['lng'],
+                  );
+                  return ListTile(
+                    leading: const Icon(Icons.location_pin),
+                    iconColor: const Color.fromARGB(255, 20, 20, 83),
+                    title: Text(
+                      place['name'] ?? 'No Name',
+                      style: const TextStyle(
+                        color: Color.fromRGBO(20, 20, 83, 1),
+                      ),
+                    ), // Display place name
+                    subtitle: Text(
+                      place['vicinity'] ?? 'No Address',
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ), // Display address
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${distance.toStringAsFixed(2)} km',
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ), // Display distance
+                      ],
+                    ),
+                    onTap: () {
+                      _launchMapsUrl(placeLocation.latitude, placeLocation.longitude); // Launch Google Maps
+                    },
+                  );
+                },
+              ),
+            ),
+            // Container(
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //       builder: (context) => SignInScreen(),
+            //       ));
+            //     },
+            //     style: ElevatedButton.styleFrom(
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //       padding: const EdgeInsets.symmetric(vertical: 20),
+            //       backgroundColor: Colors.white,
+            //     ),
+            //     child: const Center(
+            //       child: Text(
+            //         'Private parking location',
+            //         style: TextStyle(
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.bold,
+            //           color: Colors.black,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 20,),
+            // Bottom navigation bar
+            Container(
+              height: 70,
+              child: BottomNavigationBar(
+                backgroundColor: const Color(0xFF9E9EEC),
+                iconSize: 30.0,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.schedule),
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    label: '',
                   ),
-                  onTap: () {
-                    _launchMapsUrl(placeLocation.latitude, placeLocation.longitude); // Launch Google Maps
-                  },
-                );
-              },
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle),
+                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    label: '',
+                  ),
+                ],
+                onTap: (index) {
+                  if (widget.isLoggedIn) {
+                    if (index == 0) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PaymentScheduleScreen(),
+                      ));
+                    }
+                    if (index == 1) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomeScreen(userId: "66efc133b6f54c14ec81d843",),
+                      ));
+                    }
+                  } else {
+                    _showPremiumPopup();
+                  }
+                },
+              ),
             ),
-          ),
-          Spacer(),
-          // Bottom navigation bar
-          BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.schedule),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: '',
-              ),
-            ],
-            onTap: (index){
-              if(index  == 0){
-                _showPremiumPopup();
-              }
-              if(index == 1){
-                _showPremiumPopup();
-              }
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
