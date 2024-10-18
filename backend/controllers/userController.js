@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const Vehicle = require('../models/Vehicle');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -18,32 +17,29 @@ exports.registerUser = async (req, res) => {
 
 // User login
 exports.loginUser = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ email });
-       
-      // Check if the user exists and the password is correct
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-  
-      // Generate a token based on user type
-      const token = jwt.sign({ id: user._id, userType: user.userType }, process.env.JWT_SECRET, { expiresIn: '14d' });
-  
-      // Send the response with the token and user type
-      res.status(200).json({
-        id : user._id,
-        message: 'Login successful',
-        token,
-        userType: user.userType, // Include userType in the response
-        ...(user.userType === 'landowner' ? {} : { dashboard: 'normal' }),// add dashboard info based on userType
-        
-      });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    // Check if the user exists and the password is correct
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
-  };
-  
+
+    // Generate a token based on user type
+    const token = jwt.sign({ id: user._id, userType: user.userType }, process.env.JWT_SECRET, { expiresIn: '14d' });
+
+    // Send the response with the token and user type
+    res.status(200).json({
+      id: user._id,
+      message: 'Login successful',
+      token,
+      userType: user.userType,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 // Get all users
 exports.getUsers = async (req, res) => {
@@ -55,5 +51,50 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
 
-  
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Convert Decimal128 to a plain number
+    user.userAcc = user.userAcc ? user.userAcc.toString() : "0";
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+
+
+const ParkingEvent = require('../models/ParkingEvent'); // Assuming you have this model
+
+// Fetch payment history by vehicle number plate
+exports.getPaymentHistoryByPlate = async (req, res) => {
+  try {
+    const { number_plate } = req.query;
+
+    // Ensure that number_plate is provided in the query
+    if (!number_plate) {
+      return res.status(400).json({ message: 'Number plate is required' });
+    }
+
+    // Find parking events by the number plate
+    const parkingEvents = await ParkingEvent.find({ number_plate });
+
+    if (!parkingEvents || parkingEvents.length === 0) {
+      return res.status(404).json({ message: 'No payment history found for this vehicle' });
+    }
+
+    res.status(200).json(parkingEvents);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+

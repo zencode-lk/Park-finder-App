@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:park_finder/main.dart';
 import 'dart:convert';
-import 'dart:async'; // For Future and delay
 
-import 'user_login.dart'; // Import the user login page
+import 'package:park_finder/pages/user_login.dart';
 
 class VehicleRegistrationForm extends StatefulWidget {
   final String userId;
@@ -12,22 +10,19 @@ class VehicleRegistrationForm extends StatefulWidget {
   VehicleRegistrationForm({required this.userId});
 
   @override
-  _VehicleRegistrationFormState createState() =>
-      _VehicleRegistrationFormState();
+  _VehicleRegistrationFormState createState() => _VehicleRegistrationFormState();
 }
 
 class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   final _formKey = GlobalKey<FormState>();
- 
+
   final _carMakeController = TextEditingController();
   final _carModelController = TextEditingController();
   final _carNumberController = TextEditingController();
 
   bool _isSubmitting = false;
-  double _progressValue = 0.0;
 
   Future<void> _registerVehicle() async {
-     print(widget.userId);
     final url = Uri.parse('http://localhost:3000/api/vehicles/register');
     final response = await http.post(
       url,
@@ -43,32 +38,11 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
     if (response.statusCode == 201) {
       print('Vehicle registered successfully!');
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SignInScreen()),
+        MaterialPageRoute(builder: (context) => SignInScreen()), // Redirect after successful registration
       );
     } else {
       print('Failed to register vehicle: ${response.body}');
     }
-  }
-
-  Future<void> _simulateLoading() async {
-    setState(() {
-      _isSubmitting = true;
-    });
-
-    for (int i = 0; i <= 100; i++) {
-      await Future.delayed(Duration(milliseconds: 30)); // Delay for smooth progress
-      setState(() {
-        _progressValue = i / 100; // Update progress value continuously
-      });
-    }
-
-    // Once progress completes, register the vehicle
-    await _registerVehicle();
-
-    setState(() {
-      _isSubmitting = false; // Reset the loading state after registration
-      _progressValue = 0.0; // Reset progress bar after submission
-    });
   }
 
   Widget _buildTextFormField({
@@ -77,7 +51,15 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   }) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        filled: false, // Set filled to false for transparency
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0), // Rounded corners
+          borderSide: BorderSide(color: Colors.grey), // Optional: Add a light border color
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20), // Padding inside
+      ),
       validator: (value) => value!.isEmpty ? 'Enter $label' : null,
     );
   }
@@ -87,88 +69,75 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Vehicle Registration'),
+        backgroundColor: Color.fromARGB(255, 20, 20, 83),
+        foregroundColor: Color.fromARGB(255, 255, 255, 255),
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white, Colors.grey[200]!],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
           ),
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 600),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
-                    'Register Your Vehicle',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple,
-                    ),
-                  ),
-                  SizedBox(height: 20),
                   Form(
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
                         _buildTextFormField(
                           controller: _carMakeController,
-                          label: 'Car Make',
+                          label: 'Your car make',
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(height: 20),
                         _buildTextFormField(
                           controller: _carModelController,
-                          label: 'Car Model',
+                          label: 'Your car model',
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(height: 20),
                         _buildTextFormField(
                           controller: _carNumberController,
-                          label: 'Car Number',
+                          label: 'Your car number',
                         ),
-                        SizedBox(height: 24),
-                        // Show progress bar while submitting
-                        if (_isSubmitting)
-                          Column(
-                            children: [
-                              LinearProgressIndicator(
-                                value: _progressValue,
-                                backgroundColor: Colors.grey[200],
-                                color: Colors.deepPurple,
-                              ),
-                              SizedBox(height: 20),
-                            ],
-                          ),
+                        SizedBox(height: 60),
                         // Register button
                         ElevatedButton(
                           onPressed: _isSubmitting
                               ? null // Disable button while submitting
                               : () async {
-                                  if (_formKey.currentState?.validate() ??
-                                      false) {
-                                    await _simulateLoading();
+                                  if (_formKey.currentState?.validate() ?? false) {
+                                    setState(() {
+                                      _isSubmitting = true;
+                                    });
+                                    await _registerVehicle();
+                                    setState(() {
+                                      _isSubmitting = false;
+                                    });
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(30.0), // Rounded corners
                             ),
                             padding: EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 30.0),
-                            backgroundColor: Colors.deepPurple,
+                              vertical: 20.0, 
+                              horizontal: 100.0, // Adjust the width
+                            ),
+                            backgroundColor: Color.fromARGB(255, 20, 20, 83),
+                            foregroundColor: Color.fromARGB(255, 255, 255, 255),
                             elevation: 6,
-                            textStyle: TextStyle(fontSize: 18),
                           ),
                           child: Text(
-                            _isSubmitting ? 'Registering...' : 'Register',
+                            _isSubmitting ? 'Registering...' : 'Register!',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
                             ),
                           ),
                         ),

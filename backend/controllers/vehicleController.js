@@ -64,3 +64,47 @@ exports.getUserByPlateNumber = async (req, res) => {
       res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+
+
+
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
+const getVehiclesByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Log userId to check if it's passed correctly
+    console.log("User ID received:", userId);
+
+    // Ensure userId is a valid ObjectId
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+
+    // Instantiate ObjectId with 'new'
+    const vehicles = await Vehicle.find({ id: new ObjectId(userId) });
+
+    if (!vehicles || vehicles.length === 0) {
+      return res.status(404).json({ message: 'No vehicles found for this user.' });
+    }
+
+    return res.status(200).json(vehicles);
+  } catch (error) {
+    // Log the full error to the console for debugging
+    console.error("Error occurred while fetching vehicles:", error);
+
+    // Send error details in response
+    return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = {
+  getVehiclesByUserId,
+};
+

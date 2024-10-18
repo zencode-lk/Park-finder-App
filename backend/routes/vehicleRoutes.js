@@ -1,11 +1,8 @@
 const express = require('express');
-const { registerVehicle, getVehicle, getUserByPlateNumber } = require('../controllers/vehicleController');
-
 const router = express.Router();
+const { getVehiclesByUserId } = require('../controllers/vehicleController');
 
-
-router.post('/register', registerVehicle);  
-router.get('/', getVehicle);           
-router.get('/:plateNumber/user', getUserByPlateNumber); // Get vehicles by userId
+// Define route to get vehicles by user ID
+router.get('/user/:userId', getVehiclesByUserId);
 
 module.exports = router;

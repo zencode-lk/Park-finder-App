@@ -9,6 +9,7 @@ const landRoute = require('./routes/landRoute');
 const placeRoutes = require('./routes/placeRoutes');
 const errorHandler = require('./utils/errorHandler');
 const vehicleRoutes = require('./routes/vehicleRoutes');
+const parkingEventsRoute = require('./routes/parkingEvents');
 
 const app = express();
 const port = 3000;
@@ -25,6 +26,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/places', placeRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/land', landRoute);
+app.use('/api/parkingEvents', parkingEventsRoute);
+
 
 // Error handling middleware
 app.use(errorHandler);

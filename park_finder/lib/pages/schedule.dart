@@ -2,23 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
-  runApp(PaymentScheduleApp());
-}
-
-class PaymentScheduleApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Payment Schedule',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: PaymentScheduleScreen(),
-    );
-  }
-}
-
 class PaymentScheduleScreen extends StatefulWidget {
   @override
   _PaymentScheduleScreenState createState() => _PaymentScheduleScreenState();
@@ -30,14 +13,20 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
+        title: Text("Schedule"),
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
-      body: SingleChildScrollView(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
+          ),
+        ),
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,7 +56,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 ),
               ],
             ),
-           // Adjusted space for places list
+
             // Display nearby places
             if (_places.isNotEmpty)
               Column(
@@ -79,7 +68,8 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                   );
                 }).toList(),
               ),
-            SizedBox(height: screenHeight * 0.025), // Space before schedule title
+            SizedBox(height: 300), // Space before schedule title
+
             // Schedule title
             Center(
               child: Text(
@@ -131,7 +121,6 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
             // Pay button
             ElevatedButton(
               onPressed: () {
-               
                 _showUnavailablePopup();
               },
               style: ElevatedButton.styleFrom(
@@ -157,7 +146,7 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
 
   Future<void> _fetchNearbyPlaces() async {
     final String location = _locationController.text;
-    final String url = 'http://localhost:3000/api/places?location=$location&radius=300';
+    final String url = 'http://192.168.43.28:3000/api/places?location=$location&radius=300';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -223,9 +212,6 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
     );
   }
 
-  // Simulate a payment process
- 
-
   // Show the success dialog after payment is completed
   void _showSuccessDialog(BuildContext context) {
     showDialog(
@@ -248,24 +234,6 @@ class _PaymentScheduleScreenState extends State<PaymentScheduleScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Text(
-                  'Dashboard',
-                  style: TextStyle(
-                    color: Color.fromRGBO(20, 20, 83, 1),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
             ],
           ),
         );

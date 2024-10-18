@@ -4,8 +4,7 @@ import 'dart:convert';
 import 'user_login.dart';
 
 class LandOwnerRegister extends StatefulWidget {
-  final Map<String, dynamic>
-      landData; // Receiving the land data from previous page
+  final Map<String, dynamic> landData; // Receiving the land data from previous page
 
   LandOwnerRegister({required this.landData});
   @override
@@ -36,13 +35,10 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
             'password': _passwordController.text,
             'confirmPassword': _confirmPasswordController.text,
             'userType': 'landowner',
-
-            // Include land data received from previous page
             'land': widget.landData,
           }));
 
       if (response.statusCode == 201) {
-
         print('Landowner registered: ${response.body}');
         return true;
       } else {
@@ -57,62 +53,58 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
+        title: Text('Landowner Registration'),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: screenHeight,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.white, Color(0xFF9E9EEC)],
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
           ),
+        ),
+        child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08), // Responsive padding
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  //SizedBox(height: screenHeight * 0.05), // Responsive spacing
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
-                      labelText: 'Firstname',
+                      labelText: 'First Name',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _lastNameController,
                     decoration: InputDecoration(
-                      labelText: 'Last name',
+                      labelText: 'Last Name',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _userNameController,
                     decoration: InputDecoration(
-                      labelText: 'User name',
+                      labelText: 'User Name',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -123,7 +115,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _nicController,
                     decoration: InputDecoration(
@@ -132,9 +124,8 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    keyboardType: TextInputType.text,
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
@@ -145,7 +136,7 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _confirmPasswordController,
                     decoration: InputDecoration(
@@ -156,10 +147,10 @@ class _LandOwnerRegisterState extends State<LandOwnerRegister> {
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: 60),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(screenWidth * 0.9, 50), // Responsive size
+                      minimumSize: Size(300, 50), // Fixed button size
                       backgroundColor: Color(0xFF0C0C5D), // Button color
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:park_finder/pages/land_owner_registration.dart';
 
-
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LandRegistrationPage(), // Set the home to your LandRegistrationPage
+      home: LandRegistrationPage(),
     );
   }
 }
@@ -41,100 +41,115 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: 20),
-              // Street No Input
-              TextFormField(
-                controller: _streetNo,
-                decoration: InputDecoration(
-                  labelText: 'Street No',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Road Input
-              TextFormField(
-                controller: _road,
-                decoration: InputDecoration(
-                  labelText: 'Road',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              // City Input
-              TextFormField(
-                controller: _city,
-                decoration: InputDecoration(
-                  labelText: 'City',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Mobile Number Input
-              TextFormField(
-                controller: _mobileNumber,
-                decoration: InputDecoration(
-                  labelText: 'Land Owner Contact Number',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Parking Slot Input
-              TextFormField(
-                controller: _parkingSlot,
-                decoration: InputDecoration(
-                  labelText: 'Number of Parking Slots',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 50),
-              // Submit Button
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(300, 50),
-                  backgroundColor: Color(0xFF0C0C5D), // Button color
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0),
-                ),
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    // Navigate to LandOwnerRegister page, passing the land data
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LandOwnerRegister(
-                        landData: {
-                          'landLocation': {
-                            'streetNo': _streetNo.text,
-                            'road': _road.text,
-                            'city': _city.text,
-                          },
-                          'ownerContact': _mobileNumber.text,
-                          'noParkingSlot': _parkingSlot.text,
-                        },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Color(0xFF9E9EEC)],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 400),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    // Street No Input
+                    TextFormField(
+                      controller: _streetNo,
+                      decoration: InputDecoration(
+                        labelText: 'Street No',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
-                    ));
-                  }
-                },
-                child: Text('Next'),
+                    ),
+                    SizedBox(height: 20),
+                    // Road Input
+                    TextFormField(
+                      controller: _road,
+                      decoration: InputDecoration(
+                        labelText: 'Road',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    // City Input
+                    TextFormField(
+                      controller: _city,
+                      decoration: InputDecoration(
+                        labelText: 'City',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    // Mobile Number Input
+                    TextFormField(
+                      controller: _mobileNumber,
+                      decoration: InputDecoration(
+                        labelText: 'Land Owner Contact Number',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    // Parking Slot Input
+                    TextFormField(
+                      controller: _parkingSlot,
+                      decoration: InputDecoration(
+                        labelText: 'Number of Parking Slots',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 60),
+                    // Submit Button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(300, 50),
+                        backgroundColor: Color(0xFF0C0C5D), // Button color
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          // Navigate to LandOwnerRegister page, passing the land data
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LandOwnerRegister(
+                              landData: {
+                                'landLocation': {
+                                  'streetNo': _streetNo.text,
+                                  'road': _road.text,
+                                  'city': _city.text,
+                                },
+                                'ownerContact': _mobileNumber.text,
+                                'noParkingSlot': _parkingSlot.text,
+                              },
+                            ),
+                          ));
+                        }
+                      },
+                      child: Text('Next'),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
         ),
       ),

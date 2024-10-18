@@ -3,7 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
+import 'package:url_launcher/url_launcher.dart'; 
+import 'package:geolocator/geolocator.dart'; // Add this for distance calculations
 
 import 'package:park_finder/pages/user_register.dart';
 
@@ -68,7 +69,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   }
 
   Future<void> _fetchNearbyPlaces() async {
-    final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=1000';
+    final String url = 'http://localhost:3000/api/places?location=${_currentLocation.latitude},${_currentLocation.longitude}&radius=5000';
     print(url);
     
     try {
@@ -78,9 +79,32 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
         final List results = data['results'];
 
         setState(() {
-          _places = results;
+          _places = results.map((place) {
+            final LatLng placeLocation = LatLng(
+              place['geometry']['location']['lat'],
+              place['geometry']['location']['lng'],
+            );
+
+            // Calculate distance between current location and place location
+            double distance = Geolocator.distanceBetween(
+              _currentLocation.latitude,
+              _currentLocation.longitude,
+              placeLocation.latitude,
+              placeLocation.longitude,
+            ) / 1000; // Convert meters to kilometers
+
+            return {
+              'place': place,
+              'distance': distance, // Add distance to each place
+            };
+          }).toList();
+
+          // Sort the places by distance
+          _places.sort((a, b) => a['distance'].compareTo(b['distance']));
+
           _markers.clear();
-          for (var place in _places) {
+          for (var item in _places) {
+            final place = item['place'];
             final LatLng placeLocation = LatLng(
               place['geometry']['location']['lat'],
               place['geometry']['location']['lng'],
@@ -92,7 +116,6 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                 infoWindow: InfoWindow(title: place['name']),
               ),
             );
-            print(place['name']);
           }
         });
       } else {
@@ -104,7 +127,6 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
   }
 
   void _addMarkers() {
-    // Add the marker for the current location
     final List<Marker> markers = [
       Marker(
         markerId: MarkerId('current_location'),
@@ -122,6 +144,15 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
         );
       }
     });
+  }
+
+  void _launchMapsUrl(double latitude, double longitude) async {
+    final url = 'https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void _showPremiumPopup() {
@@ -143,24 +174,24 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                     fontSize: 18, 
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 255, 255, 255),
-                  ),
+                  )
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Schedule",
+                  "Shedule",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18, 
                     fontWeight: FontWeight.normal,
                     color: Color.fromARGB(255, 255, 255, 255),
-                  ),
+                  )
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => UserRegister(),
-                    )); // Close the popup
+                    builder: (context) => UserRegister(),
+                    ));// Close the popup
                   },
                   child: Text(
                     "PREMIUM",
@@ -169,6 +200,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                       color: Color.fromRGBO(20, 20, 83, 1),
                     ),
                   ),
+                  
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Background color
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
@@ -183,7 +215,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                     fontSize: 12, 
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 255, 255, 255),
-                  ),
+                  )
                 ),
               ],
             ),
@@ -192,16 +224,6 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
       },
     );
   }
-
-  void _launchMapsUrl(double latitude, double longitude) async {
-    final url = 'https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,12 +251,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             decoration: BoxDecoration(
               color: Color.fromARGB(255, 20, 20, 83),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25)
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
             ),
             height: 300,
             width: 375,
@@ -281,7 +298,8 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
             child: ListView.builder(
               itemCount: _places.length,
               itemBuilder: (context, index) {
-                final place = _places[index];
+                final place = _places[index]['place'];
+                final distance = _places[index]['distance']; // Get the distance
                 final LatLng placeLocation = LatLng(
                   place['geometry']['location']['lat'],
                   place['geometry']['location']['lng'],
@@ -293,8 +311,7 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Nearest'),
-                      Text('50m'), // Placeholder text
+                      Text('${distance.toStringAsFixed(2)} km'), // Display distance
                     ],
                   ),
                   onTap: () {
@@ -317,6 +334,14 @@ class _ParkingLocationScreenState extends State<ParkingLocationScreen> {
                 label: '',
               ),
             ],
+            onTap: (index){
+              if(index  == 0){
+                _showPremiumPopup();
+              }
+              if(index == 1){
+                _showPremiumPopup();
+              }
+            },
           ),
         ],
       ),

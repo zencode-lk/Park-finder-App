@@ -22,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _isLoading = false;
 
   Future<bool> _loginUser() async {
-    final url = Uri.parse('http://localhost:3000/api/users/login');
+    final url = Uri.parse('http://192.168.215.201:3000/api/users/login');
 
     setState(() {
       _isLoading = true; // Start loading
@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
-        final userType = data['userType'];  // Get userType from the response
+        final userType = data['userType']; // Get userType from the response
         final userId = data['id'];
         print('Login successful, token: $token, userType: $userType, id: $userId');
 
@@ -61,10 +61,12 @@ class _SignInScreenState extends State<SignInScreen> {
         return true;
       } else {
         print('Failed to log in: ${response.body}');
+        _showErrorDialog('Login failed. Please check your credentials and try again.');
         return false;
       }
     } catch (e) {
       print('Login error: $e');
+      _showErrorDialog('An error occurred. Please try again.');
       return false;
     } finally {
       setState(() {
@@ -73,10 +75,31 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+    // Clear text fields
+    _usernameController.clear();
+    _passwordController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(20, 20, 83, 1),
@@ -88,13 +111,13 @@ class _SignInScreenState extends State<SignInScreen> {
           children: <Widget>[
             Image.asset(
               'images/logio.png',
-              height: size.height * 0.35, // Responsive height
-              width: size.width * 0.7, // Responsive width
+              height: 350, // Fixed height
+              width: 350,  // Fixed width
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 0),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              height: size.height * 0.65, // Adjust height
+              height: 435, // Fixed height
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -107,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     Text(
                       'hello!',
                       style: TextStyle(
@@ -116,7 +139,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 30),
                     TextFormField(
                       controller: _usernameController,
                       style: TextStyle(
@@ -145,7 +168,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
                       style: TextStyle(
@@ -204,36 +227,34 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ],
                     ),
-                    Spacer(), // Pushes the button to the bottom
+                    SizedBox(height: 50,), // Pushes the button to the bottom
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(146, 255, 255, 255),
-                        foregroundColor: Color.fromARGB(148, 144, 195, 255),
+                        backgroundColor: Color.fromARGB(255, 20, 20, 83), // Correct background color usage
+                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.3, vertical: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                       ),
-                      onPressed: _isLoading
-                          ? null // Disable button if loading
-                          : () async {
-                              bool success = await _loginUser();
-                              if (!success) {
-                                print('Login failed');
-                              }
-                            },
-                      child: _isLoading
-                          ? CircularProgressIndicator() // Show loading spinner
-                          : Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: const Color.fromARGB(255, 20, 20, 83),
-                              ),
-                            ),
+
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          bool success = await _loginUser();
+                          if (!success) {
+                            // Showing the error is handled in _loginUser with _showErrorDialog
+                            print('Login failed');
+                          }
+                        }
+                      },
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 50), // Add some space at the bottom
+                    SizedBox(height: 20),
                   ],
                 ),
               ),

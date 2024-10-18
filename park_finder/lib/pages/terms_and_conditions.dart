@@ -43,7 +43,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
         foregroundColor: Color.fromRGBO(255, 255, 255, 1),
         title: Text(
           'Terms and Conditions',
-          style: TextStyle(color: Colors.white), // Heading text color set to white
+          style: TextStyle(color: Colors.white), 
         ),
       ),
       body: SingleChildScrollView(
@@ -186,30 +186,32 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
             ),
             SizedBox(height: 20),
             // Continue button (can be disabled if the checkbox is not checked)
-            ElevatedButton(
-              onPressed: _isChecked
-                  ? () {
-                      // Action when checkbox is checked and button pressed
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Terms and Conditions Accepted')),
-                      );
-                      if (widget.navigateToLandOwnerPage){
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => UserLandOwner(), // Pass the userId
-                          ));
+            Center(
+              child:ElevatedButton(
+                onPressed: _isChecked
+                    ? () {
+                        // Action when checkbox is checked and button pressed
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Terms and Conditions Accepted')),
+                        );
+                        if (widget.navigateToLandOwnerPage){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => UserLandOwner(), // Pass the userId
+                            ));
+                        }
+                        else{
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignInScreen(), // Pass the userId
+                            ));
+                        }
                       }
-                      else{
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignInScreen(), // Pass the userId
-                          ));
-                      }
-                    }
-                  : null, // Disable button if checkbox is not checked
-              
-              child: Text('Continue'), // Changed text to "Continue"
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 20, 20, 83), // Correct background color usage
-                foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                    : null, // Disable button if checkbox is not checked
+                
+                child: Text('Continue'), // Changed text to "Continue"
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 20, 20, 83), // Correct background color usage
+                  foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                ),
               ),
             ),
           ],
