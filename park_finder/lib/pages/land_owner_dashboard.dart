@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
 class LandOwnerDashboardScreen extends StatelessWidget {
   final String userId;
 
+
   LandOwnerDashboardScreen({required this.userId});
+
 
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,8 @@ class _VehicleRegistrationFormState extends State<VehicleRegistrationForm> {
   bool _isSubmitting = false;
 
   Future<void> _registerVehicle() async {
+
+     print(widget.userId);
     final url = Uri.parse('http://localhost:3000/api/vehicles/register');
     final response = await http.post(
       url,
