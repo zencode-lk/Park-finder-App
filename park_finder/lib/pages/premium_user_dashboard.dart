@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF746DAA), 
+      backgroundColor: Color(0xFF746DAA), // Updated background color
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Find Parking button 
+                        // Find Parking button with custom size
                         buildMainButton(
                           context,
                           'Find Parking',
@@ -44,8 +44,8 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => ParkingLocationScreen(),
                             ));
                           },
-                          320.0,
-                          150.0, 
+                          320.0, // Fixed width for Find Parking button
+                          150.0, // Increased height for Find Parking button
                         ),
                         SizedBox(height: 16),
                         buildMainButton(
@@ -54,11 +54,11 @@ class HomeScreen extends StatelessWidget {
                           'images/schedule.jpg',
                           () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PaymentScheduleScreen(),
+                              builder: (context) => PaymentScheduleScreen(userId: userId),
                             ));
                           },
-                          320.0, 
-                          120.0, 
+                          320.0, // Fixed width for other buttons
+                          120.0, // Standard height for other buttons
                         ),
                         SizedBox(height: 16),
                         buildMainButton(
@@ -70,8 +70,8 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => ReviewPage(),
                             ));
                           },
-                          320.0, 
-                          120.0, 
+                          320.0, // Fixed width for other buttons
+                          120.0, // Standard height for other buttons
                         ),
                         SizedBox(height: 16),
                         buildMainButton(
@@ -85,8 +85,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ));
                           },
-                          320.0, 
-                          120.0, 
+                          320.0, // Fixed width for other buttons
+                          120.0, // Standard height for other buttons
                         ),
                       ],
                     ),
@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
 
-              // User Icon 
+              // User Icon in the top-right corner
               Positioned(
                 top: 16,
                 right: 16,
@@ -107,13 +107,14 @@ class HomeScreen extends StatelessWidget {
                         name: userName,
                         email: userEmail,
                         vehicles: userVehicles,
+                        userId: userId,
                       ),
-                    )); 
+                    )); // Corrected this part
                   },
                 ),
               ),
 
-              // Customer Service Icon 
+              // Customer Service Icon in the bottom right corner
               Positioned(
                 bottom: 16,
                 right: 16,
@@ -152,7 +153,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 onTap: () {
-                                  // Added the  email functionality
+                                  // Add email functionality
                                   // For example: launchUrl(Uri(scheme: 'mailto', path: 'support@zencode.com'));
                                 },
                               ),
@@ -172,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop(); 
+                                Navigator.of(context).pop(); // Close the dialog
                               },
                               child: Text('Close'),
                             ),
@@ -190,7 +191,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  
+  // Build Main Button function with custom button height, fixed width, and styling
   Widget buildMainButton(BuildContext context, String title, String imagePath,
       VoidCallback onTap, double width, double height) {
     return GestureDetector(

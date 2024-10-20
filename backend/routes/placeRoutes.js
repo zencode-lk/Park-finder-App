@@ -1,10 +1,9 @@
-// routes/placeRoutes.js
 const express = require('express');
 const { getNearbyPlaces } = require('../controllers/placeController');
-
+const landController = require('../controllers/landController')
 const router = express.Router();
 
-// Define route for fetching nearby places
-router.get('/', getNearbyPlaces);
 
+router.get('/', getNearbyPlaces);
+router.get('/local', landController.getPlacesByCity);
 module.exports = router;

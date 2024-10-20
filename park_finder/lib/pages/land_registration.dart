@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:park_finder/pages/land_owner_registration.dart';
 
-
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LandRegistrationPage(), 
+      home: LandRegistrationPage(),
     );
   }
 }
@@ -32,6 +32,8 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
   final _city = TextEditingController();
   final _mobileNumber = TextEditingController();
   final _parkingSlot = TextEditingController();
+  final _noReserveSlot = TextEditingController();
+  final _landName = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,17 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
+               SizedBox(height: 20),
+              // City Input
+              TextFormField(
+                controller: _landName,
+                decoration: InputDecoration(
+                  labelText: 'Land Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
               SizedBox(height: 20),
               // Street No Input
               TextFormField(
@@ -80,6 +93,7 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: 20),
               // Mobile Number Input
               TextFormField(
@@ -103,6 +117,17 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                 ),
               ),
               SizedBox(height: 50),
+              // Longitude Input
+              TextFormField(
+                controller: _noReserveSlot,
+                decoration: InputDecoration(
+                  labelText: 'noReserveSlot',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 50),
               // Submit Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -112,7 +137,8 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 60.0, vertical: 15.0),
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
@@ -125,8 +151,10 @@ class _LandRegistrationPageState extends State<LandRegistrationPage> {
                             'road': _road.text,
                             'city': _city.text,
                           },
+                          'landName': _landName.text,
                           'ownerContact': _mobileNumber.text,
                           'noParkingSlot': _parkingSlot.text,
+                          'noReserveSlot': _noReserveSlot.text,
                         },
                       ),
                     ));

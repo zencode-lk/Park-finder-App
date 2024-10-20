@@ -6,5 +6,6 @@ router.post('/register', registerUser);   // Register a new user
 router.post('/login', loginUser);         // Login user
 router.get('/', getUsers);                // Get all users
 // router.get('/:id/vehicles', getUserVehicles); // Get vehicles by user's NIC
-
+router.get('/profile/:id', userProfile);
 module.exports = router;
+ 

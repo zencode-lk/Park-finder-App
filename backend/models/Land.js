@@ -8,20 +8,26 @@ const addressSchema = new mongoose.Schema({
 });
 
 // Define the land schema
-const LandSchema = new mongoose.Schema({
+const landSchema = new mongoose.Schema({
     landLocation: { type: addressSchema, required: true },
+    landName: { type: String, required: true },
     ownerContact: { type: Number, required: true },
     noParkingSlot: { type: Number, required: true },
-    availableSlot: { type: Number } // Remove required: true
+    availableSlot: { type: Number }, // Set during save
+    noReserveSlot: { type: Number, required: true },
+    availableReserveSlot: { type: Number }, //set during save
 });
 
-// Pre-save hook to set availableSlot to noParkingSlot
-LandSchema.pre('save', function(next) {
-    this.availableSlot = this.noParkingSlot; // Set availableSlot to noParkingSlot
+// Pre-save hook to set availableSlot and availableReserveSlot only during creation
+landSchema.pre('save', function (next) {
+    // Only set availableSlot and availableReserveSlot if it's a new document
+    if (this.isNew) {
+        this.availableSlot = this.noParkingSlot;
+        this.availableReserveSlot = this.noReserveSlot;
+    }
     next();
 });
 
-// Create the model
-const Land = mongoose.model('Land', LandSchema, 'landOwners');
+const Land = mongoose.model('Land', landSchema, 'landOwners');
 
 module.exports = Land;
