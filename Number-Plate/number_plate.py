@@ -11,7 +11,7 @@ from bson.decimal128 import Decimal128
 from decimal import Decimal
 
 # MongoDB connection setup
-uri = "mongodb+srv://vidundesu:ANmyfBkf2Fnlnngj@parkfinder.jdubhbw.mongodb.net/?retryWrites=true&w=majority&appName=parkFinder"
+uri = "mongo db"
 client = MongoClient(uri, server_api=ServerApi('1'))
 
 # MongoDB database and collections
