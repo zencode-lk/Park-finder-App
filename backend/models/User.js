@@ -9,7 +9,11 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   vehicles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle' }], // Reference to Vehicle model
   userType: { type: String, enum: ['normal', 'landowner'], default: 'normal'},
-  lands: [{type: mongoose.Schema.Types.ObjectId, ref: 'Land'}]
+  userAcc: { 
+    type: Number, 
+    required: function() { return this.userType === 'normal'; }  // Required only for normal users
+  },
+  lands: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Land' }]
 });
 
 module.exports = mongoose.model('User', UserSchema, 'users');

@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -9,6 +8,7 @@ const landRoute = require('./routes/landRoute');
 const placeRoutes = require('./routes/placeRoutes');
 const errorHandler = require('./utils/errorHandler');
 const vehicleRoutes = require('./routes/vehicleRoutes');
+const scheduleRoute = require('./routes/scheduleRoute');
 
 const app = express();
 const port = 3000;
@@ -25,7 +25,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/places', placeRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/land', landRoute);
-
+app.use('/api/schedule', scheduleRoute)
 // Error handling middleware
 app.use(errorHandler);
 
